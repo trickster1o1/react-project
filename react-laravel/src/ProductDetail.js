@@ -39,6 +39,14 @@ function ProductDetail(props) {
         } else {
             alert(postResult.msg);
         }
+    } 
+   async function cmntDelete(id) {
+        let res = await fetch("http://127.0.0.1:8000/api/delCmnt/"+id,{
+            method:'DELETE'
+        })
+        res = await res.json();
+        window.location.reload();
+
     }
     return(
         <>
@@ -64,7 +72,7 @@ function ProductDetail(props) {
                             <li className="cmnt"><span style={{'fontWeight':'Bold'}} className="cmntHead">{cmn.user_name}
                             { 
                                 user && user.name === cmn.user_name
-                                ? <span className="cmntDel">X</span> : null
+                                ? <span className="cmntDel" onClick = {()=>cmntDelete(cmn.id)}>X</span> : null
                                 
                            } 
                             </span><br />
