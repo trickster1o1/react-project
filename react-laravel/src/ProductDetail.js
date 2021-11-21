@@ -61,7 +61,13 @@ function ProductDetail(props) {
                         <ul>
                         {
                             comment.map((cmn)=>
-                            <li className="cmnt"><span style={{'fontWeight':'Bold'}} className="cmntHead">{cmn.user_name}</span><br />
+                            <li className="cmnt"><span style={{'fontWeight':'Bold'}} className="cmntHead">{cmn.user_name}
+                            { 
+                                user && user.name === cmn.user_name
+                                ? <span className="cmntDel">X</span> : null
+                                
+                           } 
+                            </span><br />
                                 {cmn.cmnt}
                             </li>
                             )
