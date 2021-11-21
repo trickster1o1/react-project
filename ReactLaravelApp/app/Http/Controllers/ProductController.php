@@ -93,5 +93,9 @@ class ProductController extends Controller
         $comment = \App\Models\Comment::select('*')->where('product_id','=',$cmnt)->get();
 
         return $comment;
+    } function delCmnt($id) {
+        $cmnt = \App\Models\Comment::where('id','=',$id)->delete();
+
+        return ['msg'=>'success'];
     }
 }

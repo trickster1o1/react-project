@@ -23,6 +23,7 @@ Route::post('login',[App\Http\Controllers\UserController::class,'login']);
 Route::post('addProduct',[App\Http\Controllers\ProductController::class,'addProduct']);
 Route::get('list',[App\Http\Controllers\ProductController::class,'list']);
 Route::delete('delete/{id}',[App\Http\Controllers\ProductController::class,'delete']);
+Route::delete('delCmnt/{id}',[App\Http\Controllers\ProductController::class,'delCmnt']);
 Route::get('showProduct/{id}',[App\Http\Controllers\ProductController::class,'showProduct']);
 Route::put('updateProduct/{id}',[App\Http\Controllers\ProductController::class,'updateProduct']);
 Route::get('search/{product}',[App\Http\Controllers\ProductController::class,'search']);
