@@ -42,7 +42,12 @@ function Header() {
                     </Form>
                     {user ? 
                         <NavDropdown title={user && user.name} style={{"marginRight":".5em","marginLeft":".5em"}}>
+                            {
+                                user.id !== '1' ? <NavDropdown.Item><Link to="/cart">Cart</Link></NavDropdown.Item>
+                                : null
+                            }
                             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                            
                         </NavDropdown>
                     : null }
 

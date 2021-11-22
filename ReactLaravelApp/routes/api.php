@@ -29,3 +29,6 @@ Route::put('updateProduct/{id}',[App\Http\Controllers\ProductController::class,'
 Route::get('search/{product}',[App\Http\Controllers\ProductController::class,'search']);
 Route::post('comment',[App\Http\Controllers\ProductController::class,'comment']);
 Route::get('showComment/{cmnt}',[App\Http\Controllers\ProductController::class,'showComment']);
+Route::post('addToCart/{id}',[App\Http\Controllers\ProductController::class,'addToCart']);
+Route::get('cartList/{id}',[App\Http\Controllers\ProductController::class,'cartList']);
+Route::delete('deleteCart/{id}',[App\Http\Controllers\ProductController::class,'deleteCart']);

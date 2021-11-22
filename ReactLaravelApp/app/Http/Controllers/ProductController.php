@@ -93,9 +93,40 @@ class ProductController extends Controller
         $comment = \App\Models\Comment::select('*')->where('product_id','=',$cmnt)->get();
 
         return $comment;
-    } function delCmnt($id) {
+    }
+    function delCmnt($id) {
         $cmnt = \App\Models\Comment::where('id','=',$id)->delete();
 
         return ['msg'=>'success'];
+    } 
+    function addToCart($id, request $req) {
+        $prod = \App\Models\Product::where('id','=',$id)->first();
+        if($prod){
+            $crt = new \App\Models\Cart;
+            $crt->user_id = $req->userId;
+            $crt->title = $prod->name;
+            $crt->gallery_id = $id;
+            $crt->description = $prod->description;
+            $crt->file_path = $prod->file_path;
+            $crt->price = $prod->price;
+            $crt->save();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'eror404'];
+        }
     }
+    function cartList($id) {
+        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id)->get();
+        if(count($prod) > 0){
+            return ['msg'=>'success','product'=>$prod];
+        } else {
+            return ['msg'=>'empty'];
+        }
+    }
+    function deleteCart($id) {
+        \App\Models\Cart::where('id','=',$id)->delete();
+        return ['msg'=>'success'];
+    }
+
+
 }

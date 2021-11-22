@@ -21,7 +21,21 @@ function ProductList() {
     //     console.log(result.msg);
 
     // }
+    async function addCart(id) {
+        let userId = user.id;
+        let cartData = {userId};
+        let result = await fetch("http://127.0.0.1:8000/api/addToCart/"+id, {
+            method:'POST',
+            body:JSON.stringify(cartData),
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            }
+        });
+        result = await result.json();
 
+        window.location.reload();
+    }
     return(
         <>
         <Header />
@@ -49,7 +63,9 @@ function ProductList() {
                                     ?   <> 
                                             <DeleteItem itm={item.id} /> <Link to={"/updateProduct/"+item.id} className="btn btn-primary">Update</Link>
                                         </>
-                                    : null
+                                    :   <> 
+                                            <button className="btn btn-primary" onClick={()=>addCart(item.id)}>Add Cart</button> <button  className="btn btn-danger">Buy</button>
+                                        </>
                                     }
                                 </div>
                             </div>
