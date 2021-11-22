@@ -11,6 +11,7 @@ import UpdateProduct from './UpdateProduct';
 import Footer from './Footer';
 import Protected from './Protected';
 import SearchResult from './SearchResult';
+import CartList from './CartList';
 function App() {
   return (
     <div className="App">
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route path="/searchResult/:prod">
           <SearchResult />
+        </Route>
+        <Route path="/cart">
+          <CartList />
         </Route>
 
 
