@@ -21,6 +21,18 @@ function CartList() {
         result = await result.json();
         window.location.reload();
     }
+
+    async function cancelCart() {
+        let result = await fetch("http://127.0.0.1:8000/api/cancelCart/"+user.id,{
+            method:"DELETE"
+        });
+        result = await result.json();
+        if(result.msg === "success") {
+            window.location.reload();
+        } else {
+            alert(result.msg);
+        }
+    }
     return(
         <>
             <Header />
@@ -47,6 +59,9 @@ function CartList() {
                             </tr>
                         )                    
                     }
+                    <tr>
+                        <td colSpan="4"><div style={{"float":"right","paddingRight":"7.5em"}}><button className="btn btn-danger" onClick={cancelCart}>Cancel</button> <button className="btn btn-secondary">Buy</button></div></td>
+                    </tr>
                     </tbody>
                     </table>
                     : "There is nothing in the cart"
