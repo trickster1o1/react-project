@@ -32,3 +32,4 @@ Route::get('showComment/{cmnt}',[App\Http\Controllers\ProductController::class,'
 Route::post('addToCart/{id}',[App\Http\Controllers\ProductController::class,'addToCart']);
 Route::get('cartList/{id}',[App\Http\Controllers\ProductController::class,'cartList']);
 Route::delete('deleteCart/{id}',[App\Http\Controllers\ProductController::class,'deleteCart']);
+Route::delete('cancelCart/{id}',[App\Http\Controllers\ProductController::class,'cancelCart']);
