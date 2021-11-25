@@ -7,7 +7,7 @@ function Header() {
     const history = useHistory()
     function logout(){
         localStorage.clear()
-        history.push('/register')
+        history.push('/login')
     }
     function findItem() {
         history.push('/searchResult/'+srch); 
@@ -25,7 +25,10 @@ function Header() {
                         <>
                         
                             <Link to="/home">Profile</Link>
-                            <Link to="/addProduct">Add Product</Link>
+                            { user.id == 1
+                                ? <Link to="/addProduct">Add Product</Link>
+                                : null
+                            }
                         </>
                         :
                         <>
@@ -43,7 +46,7 @@ function Header() {
                     {user ? 
                         <NavDropdown title={user && user.name} style={{"marginRight":".5em","marginLeft":".5em"}}>
                             {
-                                user.id !== '1' ? <NavDropdown.Item><Link to="/cart">Cart</Link></NavDropdown.Item>
+                                user.id !== 1 ? <NavDropdown.Item><Link to="/cart">Cart</Link></NavDropdown.Item>
                                 : null
                             }
                             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
