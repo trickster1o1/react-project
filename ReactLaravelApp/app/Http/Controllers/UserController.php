@@ -20,7 +20,7 @@ class UserController extends Controller
     }
 
     function login(request $req) {
-        $user = \App\Models\User::where('username',$req->unm)->first();
+        $user = \App\Models\User::where('username',$req->unm)->orWhere('email',$req->unm)->first();
         if(!$user || !Hash::check($req->password, $user->password)) {
             return ["error"=>"Email or password not matched"];
         }
