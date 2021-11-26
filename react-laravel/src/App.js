@@ -12,6 +12,7 @@ import Footer from './Footer';
 import Protected from './Protected';
 import SearchResult from './SearchResult';
 import CartList from './CartList';
+import PendingList from './PendingList';
 function App() {
   return (
     <div className="App">
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route path="/cart">
           <CartList />
+        </Route>
+        <Route path="/pendingProduct">
+          <PendingList />
         </Route>
 
 

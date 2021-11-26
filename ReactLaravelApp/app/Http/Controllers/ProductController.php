@@ -163,6 +163,13 @@ class ProductController extends Controller
             return ['msg'=>'error404'];
         }
     }
-
+    function pendingList($id) {
+        $pending = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','1')->get();
+        if(count($pending) > 0) {
+            return ['msg'=>'success','product'=>$pending];
+        } else {
+            return ['msg'=>'empty'];
+        }
+    }
 
 }
