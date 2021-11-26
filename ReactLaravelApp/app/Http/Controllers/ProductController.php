@@ -100,32 +100,68 @@ class ProductController extends Controller
         return ['msg'=>'success'];
     } 
     function addToCart($id, request $req) {
-        $prod = \App\Models\Product::where('id','=',$id)->first();
-        if($prod){
-            $crt = new \App\Models\Cart;
-            $crt->user_id = $req->userId;
-            $crt->title = $prod->name;
-            $crt->gallery_id = $id;
-            $crt->description = $prod->description;
-            $crt->file_path = $prod->file_path;
-            $crt->price = $prod->price;
-            $crt->save();
-            return ['msg'=>'success'];
+        $cartCheck = \App\Models\Cart::select('*')->where('user_id','=',$req->userId)->where('gallery_id','=',$id)->get();
+        if(count($cartCheck) > 0) {
+            return ['msg'=>'Already in cart'];
         } else {
-            return ['msg'=>'eror404'];
+            $prod = \App\Models\Product::where('id','=',$id)->first();
+            if($prod){
+                $crt = new \App\Models\Cart;
+                $crt->user_id = $req->userId;
+                $crt->title = $prod->name;
+                $crt->gallery_id = $id;
+                $crt->description = $prod->description;
+                $crt->file_path = $prod->file_path;
+                $crt->price = $prod->price;
+                $crt->status = '0';
+                $crt->save();
+                return ['msg'=>'success'];
+            } else {
+                return ['msg'=>'eror404'];
+            }    
         }
+        
     }
     function cartList($id) {
-        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id)->get();
-        if(count($prod) > 0){
-            return ['msg'=>'success','product'=>$prod];
+        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','0')->get();
+        $prodPending = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','1')->get();
+        if(count($prodPending) > 0) {
+            $prodPending = ''.count($prodPending);
         } else {
-            return ['msg'=>'empty'];
+            $prodPending = '0';
+        }
+        if(count($prod) > 0){
+            return ['msg'=>'success','product'=>$prod,'pending'=>$prodPending];
+        } else {
+            return ['msg'=>'empty','pending'=>$prodPending];
         }
     }
     function deleteCart($id) {
         \App\Models\Cart::where('id','=',$id)->delete();
         return ['msg'=>'success'];
+    }
+    function cancelCart($id) {
+        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id);
+        if(count($prod->get()) > 0){
+            $prod->delete();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'notFound'];
+        }
+    }
+    function buyProducts(request $req) {
+        $cartItem = \App\Models\Cart::select('*')->where('user_id','=',$req->userId)->where('status','=','0');
+        if($cartItem) {
+            foreach($cartItem->get() as $item) {
+                $item->status = '1';
+                $item->save();
+            }
+            // $cartItem->status = '1';
+            // $cartItem->save();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'error404'];
+        }
     }
 
     function cancelCart($id) {

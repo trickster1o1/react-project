@@ -26,6 +26,7 @@ Route::delete('delete/{id}',[App\Http\Controllers\ProductController::class,'dele
 Route::delete('delCmnt/{id}',[App\Http\Controllers\ProductController::class,'delCmnt']);
 Route::get('showProduct/{id}',[App\Http\Controllers\ProductController::class,'showProduct']);
 Route::put('updateProduct/{id}',[App\Http\Controllers\ProductController::class,'updateProduct']);
+Route::put('buyProducts',[App\Http\Controllers\ProductController::class,'buyProducts']);
 Route::get('search/{product}',[App\Http\Controllers\ProductController::class,'search']);
 Route::post('comment',[App\Http\Controllers\ProductController::class,'comment']);
 Route::get('showComment/{cmnt}',[App\Http\Controllers\ProductController::class,'showComment']);
