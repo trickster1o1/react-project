@@ -12,6 +12,9 @@ function Header() {
     function findItem() {
         history.push('/searchResult/'+srch); 
         window.location.reload();
+    } 
+    function cartView() {
+        history.push('/cart');
     }
     return(
         <>
@@ -46,7 +49,7 @@ function Header() {
                     {user ? 
                         <NavDropdown title={user && user.name} style={{"marginRight":".5em","marginLeft":".5em"}}>
                             {
-                                user.id !== 1 ? <NavDropdown.Item><Link to="/cart">Cart</Link></NavDropdown.Item>
+                                user.id !== 1 ? <NavDropdown.Item onClick={cartView}>Cart</NavDropdown.Item>
                                 : null
                             }
                             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>

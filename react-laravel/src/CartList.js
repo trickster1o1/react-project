@@ -49,7 +49,7 @@ function CartList() {
                     }
                     </tbody>
                     </table>
-                    : "There is nothing in the cart"
+                    : <div style={{"paddingBottom":"13em"}}>There is nothing in the cart</div>
                 }
 
             </div>
