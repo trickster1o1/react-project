@@ -33,8 +33,11 @@ function ProductList() {
             }
         });
         result = await result.json();
-
-        window.location.reload();
+        if(result.msg === "Already in cart") {
+            alert(result.msg);
+        } else {
+            window.location.reload();
+        }
     }
     return(
         <>
