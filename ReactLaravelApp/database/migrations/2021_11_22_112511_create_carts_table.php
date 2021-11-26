@@ -21,6 +21,7 @@ class CreateCartsTable extends Migration
             $table->string('price');
             $table->string('gallery_id');
             $table->string('file_path');
+            $table->string('status');
             $table->timestamps();
         });
     }
