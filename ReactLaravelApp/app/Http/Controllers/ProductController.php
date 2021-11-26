@@ -127,6 +127,15 @@ class ProductController extends Controller
         \App\Models\Cart::where('id','=',$id)->delete();
         return ['msg'=>'success'];
     }
+    function cancelCart($id) {
+        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id);
+        if(count($prod->get()) > 0){
+            $prod->delete();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'notFound'];
+        }
+    }
 
 
 }
