@@ -1,6 +1,7 @@
 import Header from './Header';
 import {useHistory} from 'react-router-dom';
 import {useEffect,useState} from 'react';
+import { Link } from 'react-router-dom';
 function CartList() {
     const user = JSON.parse(localStorage.getItem('user-info'));
     const history = new useHistory();
@@ -81,9 +82,9 @@ function CartList() {
                     </tr>
                     </tbody>
                     </table>
-                    <div><span style={{'fontWeight':'bold'}}>Pending items:</span> {data.pending}</div> 
+                    <div><Link to="/pendingProduct"><span style={{'fontWeight':'bold'}}>Pending items:</span> {data.pending}</Link></div> 
                     </div>
-                    : <div style={{"paddingBottom":"10.1em",'fontSize':'15pt','color':'red'}}>There are {data.pending} items pending</div>
+                    : <div style={{"paddingBottom":"10.1em",'fontSize':'15pt','color':'red'}}><Link to="/pendingProduct">There are {data.pending} items pending</Link></div>
                 }
 
             </div>

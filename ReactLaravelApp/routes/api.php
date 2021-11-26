@@ -32,5 +32,6 @@ Route::post('comment',[App\Http\Controllers\ProductController::class,'comment'])
 Route::get('showComment/{cmnt}',[App\Http\Controllers\ProductController::class,'showComment']);
 Route::post('addToCart/{id}',[App\Http\Controllers\ProductController::class,'addToCart']);
 Route::get('cartList/{id}',[App\Http\Controllers\ProductController::class,'cartList']);
+Route::get('pendingList/{id}',[App\Http\Controllers\ProductController::class,'pendingList']);
 Route::delete('deleteCart/{id}',[App\Http\Controllers\ProductController::class,'deleteCart']);
 Route::delete('cancelCart/{id}',[App\Http\Controllers\ProductController::class,'cancelCart']);

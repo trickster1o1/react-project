@@ -164,6 +164,16 @@ class ProductController extends Controller
         }
     }
 
+    function pendingList($id) {
+        $pending = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','1')->get();
+        if(count($pending) > 0) {
+            return ['msg'=>'success','product'=>$pending];
+        } else {
+            return ['msg'=>'empty'];
+        }
+    }
+
+
     function cancelCart($id) {
         $cart = \App\Models\Cart::select("*")->where('user_id','=',$id);
         if(count($cart->get()) > 0) {
