@@ -113,6 +113,7 @@ class ProductController extends Controller
                 $crt->description = $prod->description;
                 $crt->file_path = $prod->file_path;
                 $crt->price = $prod->price;
+                $crt->status = '0';
                 $crt->save();
                 return ['msg'=>'success'];
             } else {
@@ -122,11 +123,17 @@ class ProductController extends Controller
         
     }
     function cartList($id) {
-        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id)->get();
-        if(count($prod) > 0){
-            return ['msg'=>'success','product'=>$prod];
+        $prod = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','0')->get();
+        $prodPending = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','1')->get();
+        if(count($prodPending) > 0) {
+            $prodPending = ''.count($prodPending);
         } else {
-            return ['msg'=>'empty'];
+            $prodPending = '0';
+        }
+        if(count($prod) > 0){
+            return ['msg'=>'success','product'=>$prod,'pending'=>$prodPending];
+        } else {
+            return ['msg'=>'empty','pending'=>$prodPending];
         }
     }
     function deleteCart($id) {
@@ -140,6 +147,20 @@ class ProductController extends Controller
             return ['msg'=>'success'];
         } else {
             return ['msg'=>'notFound'];
+        }
+    }
+    function buyProducts(request $req) {
+        $cartItem = \App\Models\Cart::select('*')->where('user_id','=',$req->userId)->where('status','=','0');
+        if($cartItem) {
+            foreach($cartItem->get() as $item) {
+                $item->status = '1';
+                $item->save();
+            }
+            // $cartItem->status = '1';
+            // $cartItem->save();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'error404'];
         }
     }
 
