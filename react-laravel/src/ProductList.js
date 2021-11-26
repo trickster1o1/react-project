@@ -63,9 +63,11 @@ function ProductList() {
                                     ?   <> 
                                             <DeleteItem itm={item.id} /> <Link to={"/updateProduct/"+item.id} className="btn btn-primary">Update</Link>
                                         </>
-                                    :   <> 
+                                    : user && user.id !== 1
+                                    ?   <> 
                                             <button className="btn btn-primary" onClick={()=>addCart(item.id)}>Add Cart</button> <button  className="btn btn-danger">Buy</button>
                                         </>
+                                    : null
                                     }
                                 </div>
                             </div>
