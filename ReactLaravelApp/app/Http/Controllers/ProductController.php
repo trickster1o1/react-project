@@ -163,6 +163,7 @@ class ProductController extends Controller
             return ['msg'=>'error404'];
         }
     }
+
     function pendingList($id) {
         $pending = \App\Models\Cart::select('*')->where('user_id','=',$id)->where('status','=','1')->get();
         if(count($pending) > 0) {
@@ -171,5 +172,17 @@ class ProductController extends Controller
             return ['msg'=>'empty'];
         }
     }
+
+
+    function cancelCart($id) {
+        $cart = \App\Models\Cart::select("*")->where('user_id','=',$id);
+        if(count($cart->get()) > 0) {
+            $cart->delete();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'Error404'];
+        }
+    }
+
 
 }
