@@ -35,3 +35,5 @@ Route::get('cartList/{id}',[App\Http\Controllers\ProductController::class,'cartL
 Route::get('pendingList/{id}',[App\Http\Controllers\ProductController::class,'pendingList']);
 Route::delete('deleteCart/{id}',[App\Http\Controllers\ProductController::class,'deleteCart']);
 Route::delete('cancelCart/{id}',[App\Http\Controllers\ProductController::class,'cancelCart']);
+
+Route::get('adminList', [App\Http\Controllers\AdminController::class, 'index']);
