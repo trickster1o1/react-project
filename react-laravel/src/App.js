@@ -13,6 +13,7 @@ import Protected from './Protected';
 import SearchResult from './SearchResult';
 import CartList from './CartList';
 import PendingList from './PendingList';
+import AdminPannel from './AdminPannel';
 function App() {
   return (
     <div className="App">
@@ -46,6 +47,9 @@ function App() {
         </Route>
         <Route path="/pendingProduct">
           <PendingList />
+        </Route>
+        <Route path="/adminpannel">
+          <Protected cmt = {AdminPannel} />
         </Route>
 
 
