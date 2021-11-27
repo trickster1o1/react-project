@@ -12,7 +12,6 @@ function CartList() {
         } else {
             let result = await fetch("http://127.0.0.1:8000/api/cartList/"+user.id);
             result = await result.json();
-            console.log(result.pending);
             setData(result);
         }
     },[])
@@ -48,8 +47,17 @@ function CartList() {
             alert(result.msg);
         }
     }
-    function deleteCart(id) {
-        alert(id);
+    async function deleteCart(id) {
+        let result = await fetch("http://127.0.0.1:8000/api/deleteCart/"+id , {
+            method:'DELETE'
+        });
+        result = await result.json();
+        if (result.msg === 'success') {
+            window.location.reload();
+        } else {
+            alert(result.msg);
+        }
+
     }
 
 
