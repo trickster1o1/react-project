@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, NavDropdown, FormControl, Form, Button } from 'react-bootstrap'
 import {Link,useHistory} from 'react-router-dom'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 function Header() {
     let user = JSON.parse(localStorage.getItem('user-info'));
     let [srch,setSrch] = useState("");
@@ -15,6 +15,9 @@ function Header() {
     } 
     function cartView() {
         history.push('/cart');
+    }
+    function adminView() {
+        history.push('/adminPannel');
     }
     return(
         <>
@@ -50,7 +53,7 @@ function Header() {
                         <NavDropdown title={user && user.name} style={{"marginRight":".5em","marginLeft":".5em"}}>
                             {
                                 user.id !== 1 ? <NavDropdown.Item onClick={cartView}>Cart</NavDropdown.Item>
-                                : null
+                                : <NavDropdown.Item onClick={adminView}>Adminpannel</NavDropdown.Item>
                             }
                             <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
                             
