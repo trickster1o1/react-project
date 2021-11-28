@@ -15,4 +15,14 @@ class AdminController extends Controller
             return ['msg'=>'error404'];
         }
     }
+
+    function deleteUser($id) {
+        $user = \App\Models\User::where('id',$id);
+        if($user) {
+            $user->delete();
+            return ['msg'=>'success'];
+        } else {
+            return['msg'=>'error404'];
+        }
+    }
 }

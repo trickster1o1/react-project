@@ -21,7 +21,7 @@ function DeleteItem(props) {
     }
     return(
 
-        <button className="btn btn-danger" onClick={displayId}>
+        <button className="btn btn-danger" style={{'width':'5em'}} onClick={displayId}>
             Delete
         </button>
 

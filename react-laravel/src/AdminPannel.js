@@ -1,10 +1,13 @@
 import Header from './Header';
 import { useEffect,useState } from 'react';
 import { useHistory } from 'react-router';
+import DeleteItem from './DeleteItem';
+import { Link } from 'react-router-dom';
 function AdminPannel() {
     const user = JSON.parse(localStorage.getItem('user-info'));
     let history = new useHistory();
     let [data,setData] = useState([]);
+    let [uid,setUid] = useState('');
     useEffect(async ()=>{
         if(user && user.id !== 1) {
             history.push('/');
@@ -12,12 +15,49 @@ function AdminPannel() {
             let result = await fetch("http://127.0.0.1:8000/api/adminList");
             result = await result.json();
             setData(result);
-            console.log(data.products);
+            // console.log(data.products);
         }
     },[])
+
+    function showAreYouSure(id) {
+        let sure = document.getElementById('sure');
+        let sureBody = document.getElementById('sureBody');
+        sure.style.display = "block";
+        sureBody.style.display = "block";
+        setUid(id);
+       
+    }
+    function hideAreYouSure() {
+        let sure = document.getElementById('sure');
+        let sureBody = document.getElementById('sureBody');
+        sure.style.display = "none";
+        sureBody.style.display = "none";
+        setUid('');
+    } 
+    async function deleteUser() {
+        let result = await fetch("http://127.0.0.1:8000/api/deleteUser/"+uid, {
+            method:'DELETE'
+        });
+        result = await result.json();
+        if(result.msg === 'success') {
+            window.location.reload();
+        } else {
+            alert(result.msg);
+        }
+    }
     return(
         <>
             <Header />
+            <div id='sureBody' className="sureBoxBody">a</div>
+            <div id='sure' className="sureBox">
+                <div style={{'display':'block','width':'100%','backgroundColor':'#ccc','height':'30px','borderRadius':'12px 12px 0 0'}}><span className="sureX" onClick={hideAreYouSure}>X</span></div>
+                <div style={{'padding':'3em 2em','fontSize':'15pt'}}>
+                    Are u sure you want to delete this user ?
+                    <div style={{'position':'absolute','right':'1.5em','bottom':'1em'}}>
+                        <button className="btn btn-danger" onClick={deleteUser}>Delete</button>
+                    </div>
+                </div>
+            </div>
             <div className="container">
             <h1 align='center' style={{'paddingBottom':'1em'}}>Users</h1>
             { data.msg === 'success' ?
@@ -39,7 +79,7 @@ function AdminPannel() {
                             <td>{user.email}</td>
                             <td>{user.username}</td>
                             <td>{user.created_at}</td>
-                            <td><button className='btn btn-danger'>Delete</button></td>
+                            <td><button className='btn btn-danger' onClick={()=>showAreYouSure(user.id)}>Delete</button></td>
                         </tr>
                         )
                     }
@@ -68,7 +108,10 @@ function AdminPannel() {
                             </td>
                             <td>{product.description}</td>
                             <td>{product.price}</td>
-                            <td><button className='btn btn-danger'>Delete</button></td>
+                            <td>
+                                <DeleteItem itm={product.id} /><br />
+                                <Link to={"/updateProduct/"+product.id} className="btn btn-secondary" style={{'marginTop':'.2em','width':'5em'}}>Update</Link>
+                            </td>
                         </tr>
                         )
                     }
