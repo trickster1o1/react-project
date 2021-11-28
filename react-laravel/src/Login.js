@@ -36,14 +36,20 @@ function Login() {
 
         }
     }
+
+    function callLogin(e) {
+        if(e.key === 'Enter') {
+            login();
+        }
+    }
     return (
         <>
         <Header />
         <div className='container' style={{"paddingBottom":"42.5em"}}>
             <h1 align="center">Register</h1> <br />
             <div className='col-sm-6 offset-sm-3'>
-                <input type='text' value = {unm} onChange = {(e)=>setUsername(e.target.value)} className='form-control' placeholder='Username' /> <br />
-                <input type='password' onChange = {(e) => setPassword(e.target.value)} className='form-control' placeholder='Password' />
+                <input type='text' value = {unm} onChange = {(e)=>setUsername(e.target.value)} className='form-control' placeholder='Username' onKeyPress={(e)=>callLogin(e)} /> <br />
+                <input type='password' onChange = {(e) => setPassword(e.target.value)} className='form-control' placeholder='Password' onKeyPress={(e)=>callLogin(e)} />
                 <input type='submit' value='login' onClick={login} className="btn btn-primary" style={{"float":"right","marginTop":"5px"}} />
 
             </div>
