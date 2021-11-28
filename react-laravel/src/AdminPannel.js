@@ -22,16 +22,20 @@ function AdminPannel() {
     function showAreYouSure(id) {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
+        let body = document.getElementById('body');
         sure.style.display = "block";
         sureBody.style.display = "block";
+        body.style.overflowY = "hidden";
         setUid(id);
        
     }
     function hideAreYouSure() {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
+        let body = document.getElementById('body');
         sure.style.display = "none";
         sureBody.style.display = "none";
+        body.style.overflowY= "scroll";
         setUid('');
     } 
     async function deleteUser() {
@@ -48,8 +52,25 @@ function AdminPannel() {
     return(
         <>
             <Header />
-            <div id='sureBody' className="sureBoxBody">a</div>
-            <div id='sure' className="sureBox">
+            <div id='sureBody' className="sureBoxBody"></div>
+            <div class="modal" tabindex="-1" id="sure">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">You Sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={hideAreYouSure}></button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete the user?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>
+                    <button type="button" class="btn btn-primary" onClick={deleteUser}>Yes</button>
+                </div>
+                </div>
+            </div>
+            </div>
+            {/* <div id='sure' className="sureBox">
                 <div style={{'display':'block','width':'100%','backgroundColor':'#ccc','height':'30px','borderRadius':'12px 12px 0 0'}}><span className="sureX" onClick={hideAreYouSure}>X</span></div>
                 <div style={{'padding':'3em 2em','fontSize':'15pt'}}>
                     Are u sure you want to delete this user ?
@@ -57,7 +78,8 @@ function AdminPannel() {
                         <button className="btn btn-danger" onClick={deleteUser}>Delete</button>
                     </div>
                 </div>
-            </div>
+            </div> */}
+            
             <div className="container">
             <h1 align='center' style={{'paddingBottom':'1em'}}>Users</h1>
             { data.msg === 'success' ?
