@@ -9,14 +9,19 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     function signUp(request $req) {
-        $user = new \App\Models\User;
-        $user->name = $req->name;
-        $user->email = $req->email;
-        $user->username = $req->username;
-        $user->password = Hash::make($req->input('password'));
-        $user->save();
+        if(empty($req->name) || empty($req->email) || empty($req->username) || empty($req->password)) {
+            return ['msg'=>'Please fill all the data'];
+        } else {
+            $user = new \App\Models\User;
+            $user->name = $req->name;
+            $user->email = $req->email;
+            $user->username = $req->username;
+            $user->password = Hash::make($req->input('password'));
+            $user->save();
 
-        return $user;
+            return ['msg'=>'Success','user'=>$user];    
+        }
+        
     }
 
     function login(request $req) {
