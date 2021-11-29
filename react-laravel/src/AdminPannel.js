@@ -35,11 +35,23 @@ function AdminPannel() {
         let sure = document.getElementById('sure');
         let surP = document.getElementById('surP');
         let sureBody = document.getElementById('sureBody');
-        let surU = document.getElementById('surU');
         let body = document.getElementById('body');
         sure.style.display = "block";
         sureBody.style.display = "block";
         surP.style.display = "block";
+        body.style.overflowY = "hidden";
+        setUid(id);
+       
+    }
+    function showAreYouSureC(id) {
+        let sure = document.getElementById('sure');
+        let surP = document.getElementById('surP');
+        let sureBody = document.getElementById('sureBody');
+        let body = document.getElementById('body');
+        let surC = document.getElementById('surC');
+        surC.style.display = 'block';
+        sure.style.display = "block";
+        sureBody.style.display = "block";
         body.style.overflowY = "hidden";
         setUid(id);
        
@@ -49,7 +61,9 @@ function AdminPannel() {
         let sureBody = document.getElementById('sureBody');
         let surP = document.getElementById('surP');
         let surU = document.getElementById('surU');
+        let surC = document.getElementById('surC');
         let body = document.getElementById('body');
+        surC.style.display='none';
         sure.style.display = "none";
         surP.style.display = "none";
         sureBody.style.display = "none";
@@ -66,6 +80,17 @@ function AdminPannel() {
             window.location.reload();
         } else {
             alert(result.msg);
+        }
+    } async function deleteCart() {
+        let result = await fetch("http://127.0.0.1:8000/api/delCart/"+uid, {
+            method:'DELETE'
+        });
+        result = await result.json();
+        if(result.msg === 'success') {
+            window.location.reload();
+        } else {
+            alert(result.msg);
+            hideAreYouSure();
         }
     }
     return(
@@ -85,6 +110,7 @@ function AdminPannel() {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>
                     <button type="button" class="btn btn-primary" onClick={deleteUser} id="surU">Yes</button>
+                    <button type="button" class="btn btn-primary" onClick={deleteCart} id="surC">Sure</button>
                     <DeleteItem itm={uid} />
                     
                 </div>
@@ -107,6 +133,7 @@ function AdminPannel() {
                 <table className="table">
                     <thead>
                     <tr>
+                        <th scope="col">User_id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Username</th>
@@ -117,7 +144,9 @@ function AdminPannel() {
                     <tbody>
                     {
                         data.users.map((user)=>
+                         user.id === 1 ? null :
                         <tr>
+                            <td>{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.username}</td>
@@ -162,7 +191,41 @@ function AdminPannel() {
                     </table> 
                     : "No products here"
                 }
-            </div>
+
+                    <h1 align='center' style={{'paddingBottom':'1em'}}>Carts</h1>
+                    { data.msg === 'success' ?
+                        <table className="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">User_Id</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            data.carts.map((cart)=>
+                            <tr>
+                                <td>
+                                    <img src={"http://127.0.0.1:8000/"+cart.file_path} /><br />
+                                    <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{cart.name}</span>
+                                </td>
+                                <td>{cart.user_id}</td>
+                                <td>{cart.description}</td>
+                                <td>Rs.{cart.price}</td>
+                                <td>
+                                <button className="btn btn-danger" onClick={()=>showAreYouSureC(cart.id)} style={{'marginRight':'.5em'}}>Delete</button>
+                                </td>
+                            </tr>
+                            )
+                        }
+                        </tbody>
+                        </table> 
+                        : "No products here"
+                    }
+        </div>
         </>
     );
 }

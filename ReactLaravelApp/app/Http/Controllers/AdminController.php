@@ -9,8 +9,9 @@ class AdminController extends Controller
     function index() {
         $users = \App\Models\User::all();
         $products = \App\Models\Product::all();
+        $carts = \App\Models\Cart::all();
         if($users) {
-            return ['msg'=>'success','users'=>$users,'products'=>$products];
+            return ['msg'=>'success','users'=>$users,'products'=>$products,'carts'=>$carts];
         } else {
             return ['msg'=>'error404'];
         }
@@ -25,4 +26,16 @@ class AdminController extends Controller
             return['msg'=>'error404'];
         }
     }
+
+    function delCart($id) {
+        $cart = \App\Models\Cart::where('id',$id);
+        if($cart) {
+            $cart->delete();
+            return ['msg'=>'success'];
+        } else {
+            return ['msg'=>'error404'];
+        }
+    }
+
+
 }
