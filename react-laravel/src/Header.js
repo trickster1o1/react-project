@@ -51,7 +51,6 @@ function Header() {
                 <Nav>
                     <div className="d-flex">
                         <FormControl type="search" placeholder="search" className="me-2" aria-label="Search" onChange={(e)=>setSrch(e.target.value)} onKeyPress={(e)=>srchFn(e)} />
-                        <Button variant="outline-success" onClick={findItem}>Search</Button>
                     </div>
                     {user ? 
                         <NavDropdown title={user && user.name} style={{"marginRight":".5em","marginLeft":".5em"}}>
