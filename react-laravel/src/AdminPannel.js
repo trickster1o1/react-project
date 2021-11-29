@@ -22,9 +22,24 @@ function AdminPannel() {
     function showAreYouSure(id) {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
+        let surU = document.getElementById('surU');
+        let body = document.getElementById('body');
+        sure.style.display = "block";
+        surU.style.display = 'block';
+        sureBody.style.display = "block";
+        body.style.overflowY = "hidden";
+        setUid(id);
+       
+    }
+    function showAreYouSureP(id) {
+        let sure = document.getElementById('sure');
+        let surP = document.getElementById('surP');
+        let sureBody = document.getElementById('sureBody');
+        let surU = document.getElementById('surU');
         let body = document.getElementById('body');
         sure.style.display = "block";
         sureBody.style.display = "block";
+        surP.style.display = "block";
         body.style.overflowY = "hidden";
         setUid(id);
        
@@ -32,9 +47,13 @@ function AdminPannel() {
     function hideAreYouSure() {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
+        let surP = document.getElementById('surP');
+        let surU = document.getElementById('surU');
         let body = document.getElementById('body');
         sure.style.display = "none";
+        surP.style.display = "none";
         sureBody.style.display = "none";
+        surU.style.display = "none";
         body.style.overflowY= "scroll";
         setUid('');
     } 
@@ -65,7 +84,9 @@ function AdminPannel() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>
-                    <button type="button" class="btn btn-primary" onClick={deleteUser}>Yes</button>
+                    <button type="button" class="btn btn-primary" onClick={deleteUser} id="surU">Yes</button>
+                    <DeleteItem itm={uid} />
+                    
                 </div>
                 </div>
             </div>
@@ -109,7 +130,7 @@ function AdminPannel() {
                 </table> 
                 : "No users here"
                 }
-                <h1 align='center' style={{'paddingBottom':'1em'}}>Products</h1> 
+                <h1 align='center' style={{'paddingBottom':'1em'}}>Products <Link to="/addProduct" className="btn btn-primary">Add</Link> </h1>
                 { data.msg === 'success' ?
                     <table className="table">
                     <thead>
@@ -129,9 +150,9 @@ function AdminPannel() {
                                 <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{product.name}</span>
                             </td>
                             <td>{product.description}</td>
-                            <td>{product.price}</td>
+                            <td>Rs.{product.price}</td>
                             <td>
-                                <DeleteItem itm={product.id} /><br />
+                            <button className="btn btn-danger" onClick={()=>showAreYouSureP(product.id)} style={{'marginRight':'.5em'}}>Delete</button>
                                 <Link to={"/updateProduct/"+product.id} className="btn btn-secondary" style={{'marginTop':'.2em','width':'5em'}}>Update</Link>
                             </td>
                         </tr>
