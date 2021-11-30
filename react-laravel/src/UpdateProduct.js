@@ -41,7 +41,7 @@ function UpdateProduct(props) {
     return(
         <>
         <Header />
-        <div className='container'>
+        <div className='container' style={{'paddingBottom':'35.65em'}}>
             <h1 align="center">Add Product</h1> <br />
             <div className='col-sm-6 offset-sm-3'>
                <input type="text"  defaultValue={data.name} onChange = {(e) => setName(e.target.value)}  className='form-control' placeholder="Title" /> <br />

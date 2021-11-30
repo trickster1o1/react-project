@@ -38,3 +38,4 @@ Route::delete('cancelCart/{id}',[App\Http\Controllers\ProductController::class,'
 
 Route::get('adminList', [App\Http\Controllers\AdminController::class, 'index']);
 Route::delete('deleteUser/{id}',[App\Http\Controllers\AdminController::class,'deleteUser']);
+Route::delete('delCart/{id}',[App\Http\Controllers\AdminController::class,'delCart']);

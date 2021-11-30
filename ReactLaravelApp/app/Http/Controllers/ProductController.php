@@ -18,7 +18,12 @@ class ProductController extends Controller
         return $product;
     }
     function list() {
-        return \App\Models\Product::all();
+        $prod = \App\Models\Product::all();
+        if(count($prod) > 0) {
+            return ['msg'=>'success','products'=>$prod];
+        } else {
+            return ['msg'=>'empty','products'=>$prod];
+        }
     }
     function delete($id) {
         $item = \App\Models\Product::find($id);

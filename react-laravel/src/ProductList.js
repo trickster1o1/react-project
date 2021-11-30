@@ -3,6 +3,7 @@ import React, {useState,useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import DeleteItem from './DeleteItem';
 import {Link, useHistory} from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 function ProductList() {
     const [data,setData] = useState([]);
     let [uid,setUid] = useState('');
@@ -12,16 +13,7 @@ function ProductList() {
         result = await result.json();
         setData(result);
     },[]);
-    // async function deleteItem(id) {
-    //     let result = await fetch("http://127.0.0.1:8000/api/delete/"+id,{
-    //         method:'DELETE'
-    //     });
 
-    //     result = await result.json();
-        
-    //     console.log(result.msg);
-
-    // }
     async function addCart(id) {
         let userId = user.id;
         let cartData = {userId};
@@ -63,6 +55,50 @@ function ProductList() {
         surP.style.display = 'none';
         setUid('');
     } 
+
+    let [pageNumber, setPageNumber] = useState(0);
+    let perPage = 8;
+    let pagesVisited = pageNumber * perPage;
+       
+        
+        
+    
+    let  displayProd;
+    let pageCount;
+
+    if(data.msg === "success") {
+         displayProd =  data.products.slice(pagesVisited, pagesVisited+perPage).map((item)=>
+            { return(
+                <Col xs style={{'paddingBottom':'1em'}}>
+                    <div align="center">
+                        <img style={{"width":"100%","height":"19.55em"}} src={"http://127.0.0.1:8000/"+item.file_path} />
+                        <div style={{"textAlign":"left","lineHeight":"17px","paddingTop":"7px"}}>
+                            <span style={{"fontWeight":"bold","fontSize":"14pt"}}><Link to={"/showProduct/"+item.id}>{item.name}</Link></span>
+                            <p style={{"fontSize":"10pt"}}>{item.description}</p>
+                            {
+                            user && user.id === 1
+                            ?   <> 
+                                    <button className="btn btn-danger" onClick={()=>showAreYouSure(item.id)}>Delete</button> <Link to={"/updateProduct/"+item.id} className="btn btn-primary">Update</Link>
+                                </>
+                            : user && user.id !== 1
+                            ?   <> 
+                                    <button className="btn btn-primary" onClick={()=>addCart(item.id)}>Add Cart</button> <button  className="btn btn-danger">Buy</button>
+                                </>
+                            : null
+                            }
+                        </div>
+                    </div>
+                </Col>)
+            });
+        pageCount = Math.ceil(data.products.length/perPage);
+    } else {
+        pageCount = 0;
+        displayProd = "Nothing here";
+    }
+
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    }
     return(
         <>
         <Header />
@@ -84,44 +120,28 @@ function ProductList() {
                 </div>
             </div>
             </div>
-        <div className="container" style={{"paddingTop":"2em","paddingBottom":"26.2em"}}>
+        <div className="container" style={{"paddingTop":"2em","paddingBottom":"20.6em"}}>
                 <Row md={4}>
-               {
-                   
-                   data.map((item)=>
-                    // <tr>
-                    //     <td>{item.id}</td>
-                    //     <td>{item.name}</td>
-                    //     <td>{item.description}</td>
-                    //     <td>{item.price}</td>
-                    //     <td><img style={{"width":"10em","height":"auto"}} src={"http://127.0.0.1:8000/"+item.file_path} /></td>
-                    // </tr>
-                    
-                        <Col xs style={{'paddingBottom':'1em'}}>
-                            <div align="center">
-                                <img style={{"width":"100%","height":"19.55em"}} src={"http://127.0.0.1:8000/"+item.file_path} />
-                                <div style={{"textAlign":"left","lineHeight":"17px","paddingTop":"7px"}}>
-                                    <span style={{"fontWeight":"bold","fontSize":"14pt"}}><Link to={"/showProduct/"+item.id}>{item.name}</Link></span>
-                                    <p style={{"fontSize":"10pt"}}>{item.description}</p>
-                                    {
-                                    user && user.id === 1
-                                    ?   <> 
-                                            <button className="btn btn-danger" onClick={()=>showAreYouSure(item.id)}>Delete</button> <Link to={"/updateProduct/"+item.id} className="btn btn-primary">Update</Link>
-                                        </>
-                                    : user && user.id !== 1
-                                    ?   <> 
-                                            <button className="btn btn-primary" onClick={()=>addCart(item.id)}>Add Cart</button> <button  className="btn btn-danger">Buy</button>
-                                        </>
-                                    : null
-                                    }
-                                </div>
-                            </div>
-                        </Col>
-                    
-                   )
-               }
+                    { data.msg === 'success' ? displayProd : <h1>Nothing here</h1>}
                 </Row>
-
+                <div style={{'display':'flex','justifyContent':'center','alignItems':'center','minHeight':'7em'}}>
+                {  pageCount > 1 ?
+                    <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel = {"Next"}
+                    pageCount = {pageCount}
+                    onPageChange = {changePage}
+                    containerClassName = {"pagination page-item"}
+                    previousLinkClassName = {"page-link"}
+                    nextLinkClassName = {"page-link"}
+                    disabledClassName = {"page-item dissabled"}
+                    disabledLinkClassName = {"page-link"}
+                    activeClassName = {"page-item active"}
+                    pageClassName = {"page-item"}
+                    pageLinkClassName = {"page-link"}
+                    /> : null
+                }
+                </div>
         </div>
         </>
 
