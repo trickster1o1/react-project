@@ -18,7 +18,7 @@ class ProductController extends Controller
         return $product;
     }
     function list() {
-        $prod = \App\Models\Product::all();
+        $prod = \App\Models\Product::orderBy('id','desc')->get();
         if(count($prod) > 0) {
             return ['msg'=>'success','products'=>$prod];
         } else {
