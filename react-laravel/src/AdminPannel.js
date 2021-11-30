@@ -3,6 +3,7 @@ import { useEffect,useState } from 'react';
 import { useHistory } from 'react-router';
 import DeleteItem from './DeleteItem';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 function AdminPannel() {
     const user = JSON.parse(localStorage.getItem('user-info'));
     let history = new useHistory();
@@ -93,6 +94,37 @@ function AdminPannel() {
             hideAreYouSure();
         }
     }
+    const [pageNo,setPageNo] = useState(0);
+    const disAmount = 4;
+    const viewedPages = pageNo * disAmount;
+    let displayCont;
+    let totalNo;
+    if(data.msg === 'success') {
+        displayCont = data.products.slice(viewedPages,viewedPages+disAmount).map((product)=>{
+            return(
+            <tr>
+                <td>
+                    <img src={"http://127.0.0.1:8000/"+product.file_path} /><br />
+                    <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{product.name}</span>
+                </td>
+                <td>{product.description}</td>
+                <td>Rs.{product.price}</td>
+                <td>
+                <button className="btn btn-danger" onClick={()=>showAreYouSureP(product.id)} style={{'marginRight':'.5em'}}>Delete</button>
+                    <Link to={"/updateProduct/"+product.id} className="btn btn-secondary" style={{'marginTop':'.2em','width':'5em'}}>Update</Link>
+                </td>
+            </tr>
+        )});
+        
+        totalNo = Math.ceil(data.products.length/disAmount);
+
+    } else {
+        totalNo = 0;
+    }
+
+    let changePage = ({selected}) => {
+        setPageNo(selected);
+    }
     return(
         <>
             <Header />
@@ -129,7 +161,7 @@ function AdminPannel() {
             
             <div className="container">
             <h1 align='center' style={{'paddingBottom':'1em'}}>Users</h1>
-            { data.msg === 'success' ?
+            { data.msg === 'success' && data.usr !== 'empty' ?
                 <table className="table">
                     <thead>
                     <tr>
@@ -157,10 +189,10 @@ function AdminPannel() {
                     }
                 </tbody>
                 </table> 
-                : "No users here"
+                : <div className="emptyMsg" >Nothing Here</div>
                 }
                 <h1 align='center' style={{'paddingBottom':'1em'}}>Products <Link to="/addProduct" className="btn btn-primary">Add</Link> </h1>
-                { data.msg === 'success' ?
+                { data.msg === 'success' && data.prod !== 'empty' ?
                     <table className="table">
                     <thead>
                     <tr>
@@ -171,35 +203,53 @@ function AdminPannel() {
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        data.products.map((product)=>
-                        <tr>
-                            <td>
-                                <img src={"http://127.0.0.1:8000/"+product.file_path} /><br />
-                                <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{product.name}</span>
-                            </td>
-                            <td>{product.description}</td>
-                            <td>Rs.{product.price}</td>
-                            <td>
-                            <button className="btn btn-danger" onClick={()=>showAreYouSureP(product.id)} style={{'marginRight':'.5em'}}>Delete</button>
-                                <Link to={"/updateProduct/"+product.id} className="btn btn-secondary" style={{'marginTop':'.2em','width':'5em'}}>Update</Link>
-                            </td>
-                        </tr>
-                        )
+                    { displayCont
+                        // data.products.map((product)=>
+                        // <tr>
+                        //     <td>
+                        //         <img src={"http://127.0.0.1:8000/"+product.file_path} /><br />
+                        //         <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{product.name}</span>
+                        //     </td>
+                        //     <td>{product.description}</td>
+                        //     <td>Rs.{product.price}</td>
+                        //     <td>
+                        //     <button className="btn btn-danger" onClick={()=>showAreYouSureP(product.id)} style={{'marginRight':'.5em'}}>Delete</button>
+                        //         <Link to={"/updateProduct/"+product.id} className="btn btn-secondary" style={{'marginTop':'.2em','width':'5em'}}>Update</Link>
+                        //     </td>
+                        // </tr>
+                        // )
                     }
                     </tbody>
                     </table> 
-                    : "No products here"
+                    : <div className="emptyMsg" >Nothing Here</div>
+                }
+                {  totalNo > 1 ?
+                    <div style={{'display':'flex','justifyContent':'center','paddingBottom':'.5em'}}>
+                    <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel = {"Next"}
+                    pageCount = {totalNo}
+                    onPageChange = {changePage}
+                    containerClassName = {"pagination page-item"}
+                    previousLinkClassName = {"page-link"}
+                    nextLinkClassName = {"page-link"}
+                    disabledClassName = {"page-item dissabled"}
+                    disabledLinkClassName = {"page-link"}
+                    activeClassName = {"page-item active"}
+                    pageClassName = {"page-item"}
+                    pageLinkClassName = {"page-link"}
+                    /></div>: null
                 }
 
                     <h1 align='center' style={{'paddingBottom':'1em'}}>Carts</h1>
-                    { data.msg === 'success' ?
+                    { data.msg === 'success' && data.crt !== 'empty' ?
                         <table className="table">
                         <thead>
                         <tr>
                             <th scope="col">Product</th>
                             <th scope="col">User_Id</th>
                             <th scope="col">Description</th>
+                            <th scope="col">Stored_at</th>
                             <th scope="col">Price</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -214,6 +264,7 @@ function AdminPannel() {
                                 </td>
                                 <td>{cart.user_id}</td>
                                 <td>{cart.description}</td>
+                                <td>{cart.created_at}</td>
                                 <td>Rs.{cart.price}</td>
                                 <td>
                                 <button className="btn btn-danger" onClick={()=>showAreYouSureC(cart.id)} style={{'marginRight':'.5em'}}>Delete</button>
@@ -223,7 +274,7 @@ function AdminPannel() {
                         }
                         </tbody>
                         </table> 
-                        : "No products here"
+                        : <div className="emptyMsg" >Nothing Here</div>
                     }
         </div>
         </>

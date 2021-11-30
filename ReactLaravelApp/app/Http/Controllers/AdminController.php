@@ -8,10 +8,25 @@ class AdminController extends Controller
 {
     function index() {
         $users = \App\Models\User::all();
-        $products = \App\Models\Product::all();
+        $products = \App\Models\Product::orderBy('id','desc')->get();
         $carts = \App\Models\Cart::all();
-        if($users) {
-            return ['msg'=>'success','users'=>$users,'products'=>$products,'carts'=>$carts];
+        if($users && $products && $carts) {
+            if(count($carts) < 1) {
+                $crt = 'empty';
+            } else {
+                $crt = 'load';
+            }
+            if(count($users) < 1) {
+                $usr = 'empty';
+            } else {
+                $usr = 'load';
+            }
+            if(count($products) < 1) {
+                $prod = 'empty';
+            } else {
+                $prod = 'load';
+            }
+            return ['msg'=>'success','users'=>$users,'products'=>$products,'carts'=>$carts,'crt'=>$crt,'usr'=>$usr,'prod'=>$prod];
         } else {
             return ['msg'=>'error404'];
         }
