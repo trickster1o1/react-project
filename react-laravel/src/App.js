@@ -14,6 +14,7 @@ import SearchResult from './SearchResult';
 import CartList from './CartList';
 import PendingList from './PendingList';
 import AdminPannel from './AdminPannel';
+import ApiTest from './ApiTest';
 function App() {
   return (
     <div className="App">
@@ -50,6 +51,9 @@ function App() {
         </Route>
         <Route path="/adminpannel">
           <Protected cmt = {AdminPannel} />
+        </Route>
+        <Route path="/dictionary">
+          <ApiTest />
         </Route>
 
 
