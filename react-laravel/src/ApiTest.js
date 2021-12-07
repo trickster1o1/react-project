@@ -37,13 +37,13 @@ function ApiTest() {
                     <div align="left" style={{'fontSize':'15pt'}}>
                     <span style = {{'display':'block','fontWeight':'bold','fontSize':'20pt'}} align='center' >{dicData.word.toUpperCase()}
                     <br />
-                    
-                    <audio controls preload="none">
+
+                    <audio controls autoPlay="true">
                         <source src={dicData.phonetics[0].audio} type="audio/ogg" />
                         <source src={dicData.phonetics[0].audio} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>
-
+                    
                     </span>
                     <span style={{'fontWeight':'bold'}}>Meaning:</span> {dicData.meanings[0].definitions[0].definition} <br />
                     <span style={{'fontWeight':'bold'}}>Example:</span> {dicData.meanings[0].definitions[0].example} <br />
