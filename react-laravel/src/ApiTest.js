@@ -1,19 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from './Header';
 function ApiTest() {
     let [srchKey, setSrchKey] = useState('');
     let [dicData, setDicData] = useState([]);
     // useEffect(async ()=>{
-    //     let res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/hello")
-    //     res = await res.json();
-    //     console.log(res[0].word);
+        
+    //     await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/kkkk")
+    //     .then((response) => response.json()).then((res) => {
+    //         console.log(res[0].word);
+    //     }).catch((error)=>{
+    //         console.log("nope  "+error.message);
+    //     })
+        
     // } ,[])
     
     async function showDic() {
-        let res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey);
-        res = await res.json();
-        setDicData(res[0]);
-        console.log(dicData);
+        // let res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey);
+        // res = await res.json();
+        // setDicData(res[0]);
+            
+            await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey)
+            .then((response) => response.json()).then((res) => {
+                setDicData(res[0]);
+            })
     }
 
     function triggerSrch(e) {
@@ -37,19 +46,19 @@ function ApiTest() {
                     <div align="left" style={{'fontSize':'15pt'}}>
                     <span style = {{'display':'block','fontWeight':'bold','fontSize':'20pt'}} align='center' >{dicData.word.toUpperCase()}
                     <br />
-                    
-                    <audio controls preload="none">
+
+                    <audio controls autoPlay={true}>
                         <source src={dicData.phonetics[0].audio} type="audio/ogg" />
                         <source src={dicData.phonetics[0].audio} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>
-
+                    
                     </span>
                     <span style={{'fontWeight':'bold'}}>Meaning:</span> {dicData.meanings[0].definitions[0].definition} <br />
                     <span style={{'fontWeight':'bold'}}>Example:</span> {dicData.meanings[0].definitions[0].example} <br />
                     
                     </div>
-                    : <b>The word doesn't exist</b>
+                    :  <b>The word doesn't exist</b>
                 }
                 </div>
             </div>
