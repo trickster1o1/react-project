@@ -1,16 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 function ApiTest() {
     let [srchKey, setSrchKey] = useState('');
     let [dicData, setDicData] = useState([]);
+    let [marvelData, setMarvelData] = useState([]);
     // useEffect(async ()=>{
         
-    //     await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/kkkk")
-    //     .then((response) => response.json()).then((res) => {
-    //         console.log(res[0].word);
-    //     }).catch((error)=>{
-    //         console.log("nope  "+error.message);
-    //     })
+    //     await fetch('https://gateway.marvel.com:443/v1/public/characters?name=hulk&apikey=101ba341ca52b7d6d3b97f27e997ceb6')
+    //     .then((response)=>response = response.json()).then((res)=>console.log(res.data.results[0].description));
         
     // } ,[])
     
@@ -20,14 +17,32 @@ function ApiTest() {
         // setDicData(res[0]);
             
             await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey)
-            .then((response) => response.json()).then((res) => {
+            .then((response) => response.json())
+            .then((res) => {
                 setDicData(res[0]);
-            })
+            });
     }
 
     function triggerSrch(e) {
         if(e.key === 'Enter') {
             showDic();
+        }
+    }
+
+    async function showMarvel() {
+        await fetch('https://gateway.marvel.com:443/v1/public/characters?name='+srchKey+'&apikey=101ba341ca52b7d6d3b97f27e997ceb6')
+        .then((response)=>response = response.json())
+        .then((res)=>{
+            setMarvelData(res.data.results[0]);
+        })
+        .catch((error)=>{
+            setMarvelData(error);
+        });
+    }
+
+    function triggerMS(e) {
+        if(e.key === 'Enter') {
+            showMarvel();
         }
     }
 
@@ -60,6 +75,37 @@ function ApiTest() {
                     </div>
                     :  <b>The word doesn't exist</b>
                 }
+                </div>
+
+                <div style={{'paddingTop':'4em'}}>
+
+                <h1 align="center">Marvel Dictionary</h1>
+                <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}}>
+                    <input type="text" onChange={(e)=>setSrchKey(e.target.value)} onKeyPress={(e)=>triggerMS(e)}  placeholder="Search in Dictionary" style={{'width':'20em','padding':'.4em','borderRadius':'5px','outline':'none','border':'1px black solid','marginRight':'.5em'}} />
+                    <button className="btn btn-primary" onClick={showMarvel}>Search</button>
+                </div>
+                <div>
+                    {
+                        marvelData && marvelData.message ? "No such charavter in the comic" :  marvelData && marvelData.name ?
+                        <div>
+                            <span style={{'fontWeight':'bold','fontSize':'20pt'}}>{marvelData.name}</span>
+                            <p>
+                                {marvelData.description}
+                            </p>
+                            <div>
+                                <ul>
+                                    {
+
+                                        marvelData.series.items.map((item) => 
+                                            <li>{item.name}</li>
+                                        )
+
+                                    }
+                                </ul>
+                            </div>
+                        </div> : "Nope"
+                    }
+                </div>
                 </div>
             </div>
         </>
