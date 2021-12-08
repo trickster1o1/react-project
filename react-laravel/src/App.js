@@ -52,7 +52,7 @@ function App() {
         <Route path="/adminpannel">
           <Protected cmt = {AdminPannel} />
         </Route>
-        <Route path="/dictionary">
+        <Route path="/apiTest">
           <ApiTest />
         </Route>
 
