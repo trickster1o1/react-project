@@ -83,3 +83,10 @@ code {
   font-weight: bold;
   color: rgba(0,0,0,.4);
 }
+
+#mov , #marv , #poke{
+  display: none;
+} .navHov:hover {
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}

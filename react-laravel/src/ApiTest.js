@@ -5,10 +5,11 @@ function ApiTest() {
     let [dicData, setDicData] = useState([]);
     let [marvelData, setMarvelData] = useState([]);
     let [movieData, setMovieData] = useState([]);
+    let [pokeData, setPokeData] = useState([]);
     // useEffect(async ()=>{
-        
-    //     await fetch('http://www.omdbapi.com/?apikey=88be7f67&t=blade')
-    //     .then((response)=>response = response.json()).then((res)=>console.log(res));
+    //     await fetch('https://pokeapi.co/api/v2/pokedex/bulbasaur')
+    //     .then((res)=>res = res.json()).then((r)=>console.log(r))
+    //     .catch((error)=>console.log(error.message));
         
     // } ,[])
     
@@ -61,12 +62,61 @@ function ApiTest() {
         }
     }
 
+    async function findPoke() {
+        await fetch('https://pokeapi.co/api/v2/pokemon/'+srchKey.toLowerCase())
+        .then((res)=>res = res.json())
+        .then((r)=>setPokeData(r))
+        .catch((error)=>console.log(setPokeData(error.message)));
+    }
+
+    function triggerPoke(e) {
+        if(e.key === 'Enter') {
+            findPoke();
+        }
+    }
+
+    function showFun(showThis) {
+        let dic = document.getElementById('dic');
+        let marv = document.getElementById('marv');
+        let mov = document.getElementById('mov');
+        let poke = document.getElementById('poke');
+
+        let colec = [dic, marv, mov, poke];
+        colec.forEach(cole => {
+            cole.style.display = 'none';
+        });
+
+        switch (showThis) {
+            case 'dic':
+                dic.style.display = 'block';
+                break;
+            case 'marv':
+                marv.style.display = 'block';
+                break;
+            case 'mov':
+                mov.style.display = 'block';
+                break;
+            case 'poke':
+                poke.style.display = 'block';
+        
+            default:
+                break;
+        }
+    }
+
     return(
         <>
             <Header />
-            <div className = 'container' style={{'paddingBottom':'1.5em','paddingTop':'2em'}}>
+            <div className = 'container' style={{'paddingBottom':'30em','paddingTop':'2em'}}>
+                <div style={{'display':'flex','padding':'.5em'}}>
+                    <div onClick={()=>showFun('dic')} className="navHov" style={{'padding':'.5em','flexGrow':'1','borderRight':'1px solid rgba(0,0,0,0.2)','fontWeight':'bold'}} align='center'>Dictionary</div>
+                    <div onClick={()=>showFun('marv')} className="navHov" style={{'padding':'.5em','flexGrow':'1','borderRight':'1px solid rgba(0,0,0,0.2)','fontWeight':'bold'}} align='center'>Marvel</div>
+                    <div onClick={()=>showFun('mov')} className="navHov" style={{'padding':'.5em','flexGrow':'1','borderRight':'1px solid rgba(0,0,0,0.2)','fontWeight':'bold'}} align='center'>IMDB</div>
+                    <div onClick={()=>showFun('poke')} className="navHov" style={{'padding':'.5em','flexGrow':'1','fontWeight':'bold'}} align='center'>Pokemon</div>
+                </div>
+                <div style={{'paddingTop':'4em'}} id="dic">
                 <h1 align="center">Dictionary</h1>
-                <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}}>
+                <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}} >
                 <input type="text" onChange={(e)=>setSrchKey(e.target.value)} onKeyPress={(e)=>triggerSrch(e)} placeholder="Search in Dictionary" style={{'width':'20em','padding':'.4em','borderRadius':'5px','outline':'none','border':'1px black solid','marginRight':'.5em'}} />
                 <button className="btn btn-primary" onClick={showDic}>Search</button>
                 </div>
@@ -91,8 +141,8 @@ function ApiTest() {
                     :  <b>Nothing to show</b>
                 }
                 </div>
-
-                <div style={{'paddingTop':'4em'}}>
+                </div>
+                <div style={{'paddingTop':'4em'}} id="marv">
 
                 <h1 align="center">Marvel Dictionary</h1>
                 <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}}>
@@ -125,7 +175,7 @@ function ApiTest() {
                 </div>
 
 
-            <div style={{'paddingTop':'4em'}}>
+            <div style={{'paddingTop':'4em'}} id="mov">
 
                 <h1 align="center">Movies Search</h1>
                 <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}}>
@@ -161,6 +211,45 @@ function ApiTest() {
                            {movieData.Plot}
                         </p>
                     </div> 
+                    
+                    : <div align='center'><b>Nothing to show</b></div>
+                    
+                }
+
+            </div>
+
+
+            <div style={{'paddingTop':'4em'}} id = 'poke'>
+
+                <h1 align="center">Pokemon Search</h1>
+                <div style={{'padding':'1em','display':'flex','justifyContent':'center','width':'100%','minHeight':'10em','alignItems':'center'}}>
+                    <input type="text" onChange={(e)=>setSrchKey(e.target.value)} onKeyPress={(e)=>triggerPoke(e)}  placeholder="Search for movies" style={{'width':'20em','padding':'.4em','borderRadius':'5px','outline':'none','border':'1px black solid','marginRight':'.5em'}} />
+                    <button className="btn btn-primary" onClick={findPoke}>Search</button>
+                </div>
+                {
+                    pokeData && pokeData.name ?
+                    
+                    <div style={{'display':'flex','flexDirection':'column','alignItems':'flex-start','minWidth':'50%'}}>
+                        <span style={{'fontWeight':'bold','fontSize':'20pt','alignSelf':'center','padding':'.5em'}}>{pokeData.name.toUpperCase()}</span>
+                        <div style={{'display':'flex','width':'100%','flexWrap':'wrap','justifyContent':'center'}}>
+                        <ul style={{'minWidth':'15%','borderRight':'1px solid black','padding':'0 1em','listStyle':'none'}}>
+                            <b>Moves:</b>
+                        {
+                            pokeData.moves.slice(0,5).map((mov)=>
+                                <li>{mov.move.name}</li>
+                            )
+                        }
+                        </ul>
+                        <ul style={{'minWidth':'15%','listStyle':'none','padding':'0 1em'}}>
+                            <b>Type:</b>
+                        {
+                            pokeData.types.slice(0,5).map((typ)=>
+                                <li>{typ.type.name}</li>
+                            )
+                        }
+                        </ul>
+                        </div>
+                    </div>
                     
                     : <div align='center'><b>Nothing to show</b></div>
                     
