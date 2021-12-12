@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Header from './Header';
+import axios from 'axios';
 function ApiTest() {
     let [srchKey, setSrchKey] = useState('');
     let [dicData, setDicData] = useState([]);
@@ -7,22 +8,34 @@ function ApiTest() {
     let [movieData, setMovieData] = useState([]);
     let [pokeData, setPokeData] = useState([]);
     // useEffect(async ()=>{
-    //     await fetch('https://pokeapi.co/api/v2/pokedex/bulbasaur')
-    //     .then((res)=>res = res.json()).then((r)=>console.log(r))
-    //     .catch((error)=>console.log(error.message));
+    //     await axios.get('https://pokeapi.co/api/v2/pokemon/ditto')
+    //     .then((r)=>console.log(r.data.abilities))
+    //     .catch((error)=>console.log(error));
+
+    //     await fetch('https://pokeapi.co/api/v2/pokemon/ditto')
+    //     .then((res)=>res = res.json()).then((res)=>console.log(res))
+    //     .catch((error)=>console.log(error));
+
+    //     await axios.post('http://127.0.0.1:8000/api/addToCart/70',{
+    //         'body':90,
+    //         'headers':{
+    //             'Content-Type':'application/json',
+    //             'Accept':'application/json'
+    //         }
+    //     }).then((res)=>console.log(res))
+    //     .catch((error)=>console.log(error));
+        
+    //     let res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey);
+    //     res = await res.json();
+    //     setDicData(res[0]);
         
     // } ,[])
     
     async function showDic() {
-        // let res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey);
-        // res = await res.json();
-        // setDicData(res[0]);
-            
-            await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey)
-            .then((response) => response.json())
-            .then((res) => {
-                setDicData(res[0]);
-            });
+
+            await axios("https://api.dictionaryapi.dev/api/v2/entries/en/"+srchKey)
+            .then((res)=>setDicData(res.data[0]))
+            .catch((error)=>console.log(error.message));
     }
 
     function triggerSrch(e) {

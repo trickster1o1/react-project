@@ -1,6 +1,7 @@
 import React ,{useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Header from './Header';
+// import axios from 'axios';
 function Login() {
     const history = useHistory()
     useEffect(()=>{
@@ -13,7 +14,6 @@ function Login() {
 
     async function login() {
         let user = {unm, password}
-        // alert(user.password)
         let result = await fetch("http://127.0.0.1:8000/api/login", {
             method:'POST',
             body:JSON.stringify(user),
@@ -24,17 +24,24 @@ function Login() {
         })
         result = await result.json()
         
-        localStorage.setItem("user-info",JSON.stringify(result))
-
-        let authCheck = JSON.parse(localStorage.getItem('user-info'));
-        if(authCheck.error) {
-            alert(authCheck.error)
-            localStorage.clear()
+        if(result.error) {
+            alert(result.error)
         }else {
-    
-            history.push("/")
+            localStorage.setItem("user-info",JSON.stringify(result))
+            history.push('/')
 
         }
+
+        // await axios.post('http://127.0.0.1:8000/api/login', user , {
+        //     headers: {
+        //         'Content-Type':'application/json',
+        //         'Accept':'application/json'
+        //     }
+        // })
+        // .then((res)=>console.log(res.data.created_at))
+        // .catch((error)=>console.log(error));
+
+
     }
 
     function callLogin(e) {
