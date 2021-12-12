@@ -1,14 +1,22 @@
 import ReactPaginate from "react-paginate";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteItem from "./DeleteItem";
+import axios from "axios";
 function Pagi(props) {
+
     let [uid,setUid] = useState('');
     function showAreYouSure(id) {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
         let surU = document.getElementById('surU');
         let body = document.getElementById('body');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "none";
+        dusr.style.display = "block";
+        dcrt.style.display = "none";
         sure.style.display = "block";
         surU.style.display = 'block';
         sureBody.style.display = "block";
@@ -21,6 +29,12 @@ function Pagi(props) {
         let surP = document.getElementById('surP');
         let sureBody = document.getElementById('sureBody');
         let body = document.getElementById('body');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "block";
+        dusr.style.display = "none";
+        dcrt.style.display = "none";
         sure.style.display = "block";
         sureBody.style.display = "block";
         surP.style.display = "block";
@@ -33,6 +47,12 @@ function Pagi(props) {
         let sureBody = document.getElementById('sureBody');
         let body = document.getElementById('body');
         let surC = document.getElementById('surC');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "none";
+        dusr.style.display = "none";
+        dcrt.style.display = "block";
         surC.style.display = 'block';
         sure.style.display = "block";
         sureBody.style.display = "block";
@@ -67,16 +87,26 @@ function Pagi(props) {
             alert(result.msg);
         }
     } async function deleteCart() {
-        let result = await fetch("http://127.0.0.1:8000/api/delCart/"+uid, {
-            method:'DELETE'
-        });
-        result = await result.json();
-        if(result.msg === 'success') {
-            window.location.reload();
-        } else {
-            alert(result.msg);
-            hideAreYouSure();
-        }
+        // let result = await fetch("http://127.0.0.1:8000/api/delCart/"+uid, {
+        //     method:'DELETE'
+        // });
+        // result = await result.json();
+        // if(result.msg === 'success') {
+        //     window.location.reload();
+        // } else {
+        //     alert(result.msg);
+        //     hideAreYouSure();
+        // }
+
+        await axios.delete("http://127.0.0.1:8000/api/delCart/"+uid)
+        .then((res)=>{
+            if(res.data.msg === 'success') {
+                window.location.reload();
+            } else {
+                alert(res.data.msg);
+                hideAreYouSure();
+            }
+        }).catch((error)=>console.log(error.message+" uid = "+uid));
     }
 
     let [page,setPage] = useState(0);
@@ -171,7 +201,9 @@ function Pagi(props) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={hideAreYouSure}></button>
                 </div>
                 <div class="modal-body">
-                    <p>Do you really want to delete the user?</p>
+                    <p id='dusr'>Do you really want to delete the user?</p>
+                    <p id='dprod'>Do you really want to delete the product?</p>
+                    <p id='dcrt'>Do you really want to delete the cart?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>

@@ -44,7 +44,7 @@ class AdminController extends Controller
 
     function delCart($id) {
         $cart = \App\Models\Cart::where('id',$id);
-        if($cart) {
+        if(count($cart->get()) > 0) {
             $cart->delete();
             return ['msg'=>'success'];
         } else {
