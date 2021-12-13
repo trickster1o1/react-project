@@ -1,5 +1,5 @@
 import ReactPaginate from "react-paginate";
-import { useState , useEffect} from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteItem from "./DeleteItem";
 import axios from "axios";
@@ -59,7 +59,6 @@ function Pagi(props) {
         sure.style.display = "block";
         sureBody.style.display = "block";
         body.style.overflowY = "hidden";
-        console.log(id);
         props.setUid(id);
        
     }
@@ -76,6 +75,7 @@ function Pagi(props) {
         sureBody.style.display = "none";
         surU.style.display = "none";
         body.style.overflowY= "scroll";
+        props.setUid('');
     } 
     async function deleteUser() {
         // alert(uid);
@@ -89,17 +89,6 @@ function Pagi(props) {
             alert(result.msg);
         }
     } async function deleteCart() {
-        // let result = await fetch("http://127.0.0.1:8000/api/delCart/"+props.uid, {
-        //     method:'DELETE'
-        // });
-        // result = await result.json();
-        // if(result.msg === 'success') {
-        //     window.location.reload();
-        // } else {
-        //     alert(result.msg);
-        //     hideAreYouSure();
-        // }
-
         await axios.delete("http://127.0.0.1:8000/api/delCart/"+props.uid)
         .then((res)=>{
             if(res.data.msg === 'success') {
@@ -190,7 +179,6 @@ function Pagi(props) {
     let changePage = ({selected}) => {
         setPage(selected)
     }
-
 
     return (
         <>
