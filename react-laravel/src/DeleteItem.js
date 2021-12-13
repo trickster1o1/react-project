@@ -1,8 +1,5 @@
-import { useHistory } from 'react-router-dom'
-import { useEffect } from 'react'
 function DeleteItem(props) {
     let item = props.itm;
-    let history = new useHistory();
 
     async function displayId(){
         let product = {item};

@@ -1,19 +1,29 @@
 import ReactPaginate from "react-paginate";
-import { useEffect, useState } from "react";
+import { useState , useEffect} from "react";
 import { Link } from "react-router-dom";
 import DeleteItem from "./DeleteItem";
+import axios from "axios";
+
 function Pagi(props) {
-    let [uid,setUid] = useState('');
+
+    
+
     function showAreYouSure(id) {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
         let surU = document.getElementById('surU');
         let body = document.getElementById('body');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "none";
+        dusr.style.display = "block";
+        dcrt.style.display = "none";
         sure.style.display = "block";
         surU.style.display = 'block';
         sureBody.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        props.setUid(id);
        
     }
     function showAreYouSureP(id) {
@@ -21,11 +31,17 @@ function Pagi(props) {
         let surP = document.getElementById('surP');
         let sureBody = document.getElementById('sureBody');
         let body = document.getElementById('body');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "block";
+        dusr.style.display = "none";
+        dcrt.style.display = "none";
         sure.style.display = "block";
         sureBody.style.display = "block";
         surP.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        props.setUid(id);
        
     }
     function showAreYouSureC(id) {
@@ -33,11 +49,18 @@ function Pagi(props) {
         let sureBody = document.getElementById('sureBody');
         let body = document.getElementById('body');
         let surC = document.getElementById('surC');
+        let dcrt = document.getElementById('dcrt');
+        let dprod = document.getElementById('dprod');
+        let dusr = document.getElementById('dusr');
+        dprod.style.display = "none";
+        dusr.style.display = "none";
+        dcrt.style.display = "block";
         surC.style.display = 'block';
         sure.style.display = "block";
         sureBody.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        console.log(id);
+        props.setUid(id);
        
     }
     function hideAreYouSure() {
@@ -53,11 +76,10 @@ function Pagi(props) {
         sureBody.style.display = "none";
         surU.style.display = "none";
         body.style.overflowY= "scroll";
-        setUid('');
     } 
     async function deleteUser() {
         // alert(uid);
-        let result = await fetch("http://127.0.0.1:8000/api/deleteUser/"+uid, {
+        let result = await fetch("http://127.0.0.1:8000/api/deleteUser/"+props.uid, {
             method:'DELETE'
         });
         result = await result.json();
@@ -67,16 +89,26 @@ function Pagi(props) {
             alert(result.msg);
         }
     } async function deleteCart() {
-        let result = await fetch("http://127.0.0.1:8000/api/delCart/"+uid, {
-            method:'DELETE'
-        });
-        result = await result.json();
-        if(result.msg === 'success') {
-            window.location.reload();
-        } else {
-            alert(result.msg);
-            hideAreYouSure();
-        }
+        // let result = await fetch("http://127.0.0.1:8000/api/delCart/"+props.uid, {
+        //     method:'DELETE'
+        // });
+        // result = await result.json();
+        // if(result.msg === 'success') {
+        //     window.location.reload();
+        // } else {
+        //     alert(result.msg);
+        //     hideAreYouSure();
+        // }
+
+        await axios.delete("http://127.0.0.1:8000/api/delCart/"+props.uid)
+        .then((res)=>{
+            if(res.data.msg === 'success') {
+                window.location.reload();
+            } else {
+                alert(res.data.msg);
+                hideAreYouSure();
+            }
+        }).catch((error)=>console.log(error.message));
     }
 
     let [page,setPage] = useState(0);
@@ -171,13 +203,15 @@ function Pagi(props) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={hideAreYouSure}></button>
                 </div>
                 <div class="modal-body">
-                    <p>Do you really want to delete the user?</p>
+                    <p id='dusr'>Do you really want to delete the user?</p>
+                    <p id='dprod'>Do you really want to delete the product?</p>
+                    <p id='dcrt'>Do you really want to delete the cart?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>
                     <button type="button" class="btn btn-primary" onClick={deleteUser} id="surU">Yes</button>
                     <button type="button" class="btn btn-primary" onClick={deleteCart} id="surC">Sure</button>
-                    <DeleteItem itm={uid} />
+                    <DeleteItem itm={props.uid} />
                     
                 </div>
                 </div>
