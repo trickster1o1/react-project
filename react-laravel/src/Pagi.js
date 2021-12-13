@@ -1,11 +1,13 @@
 import ReactPaginate from "react-paginate";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Link } from "react-router-dom";
 import DeleteItem from "./DeleteItem";
 import axios from "axios";
+
 function Pagi(props) {
 
-    let [uid,setUid] = useState('');
+    
+
     function showAreYouSure(id) {
         let sure = document.getElementById('sure');
         let sureBody = document.getElementById('sureBody');
@@ -21,7 +23,7 @@ function Pagi(props) {
         surU.style.display = 'block';
         sureBody.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        props.setUid(id);
        
     }
     function showAreYouSureP(id) {
@@ -39,7 +41,7 @@ function Pagi(props) {
         sureBody.style.display = "block";
         surP.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        props.setUid(id);
        
     }
     function showAreYouSureC(id) {
@@ -57,7 +59,8 @@ function Pagi(props) {
         sure.style.display = "block";
         sureBody.style.display = "block";
         body.style.overflowY = "hidden";
-        setUid(id);
+        console.log(id);
+        props.setUid(id);
        
     }
     function hideAreYouSure() {
@@ -73,11 +76,10 @@ function Pagi(props) {
         sureBody.style.display = "none";
         surU.style.display = "none";
         body.style.overflowY= "scroll";
-        setUid('');
     } 
     async function deleteUser() {
         // alert(uid);
-        let result = await fetch("http://127.0.0.1:8000/api/deleteUser/"+uid, {
+        let result = await fetch("http://127.0.0.1:8000/api/deleteUser/"+props.uid, {
             method:'DELETE'
         });
         result = await result.json();
@@ -87,7 +89,7 @@ function Pagi(props) {
             alert(result.msg);
         }
     } async function deleteCart() {
-        // let result = await fetch("http://127.0.0.1:8000/api/delCart/"+uid, {
+        // let result = await fetch("http://127.0.0.1:8000/api/delCart/"+props.uid, {
         //     method:'DELETE'
         // });
         // result = await result.json();
@@ -98,7 +100,7 @@ function Pagi(props) {
         //     hideAreYouSure();
         // }
 
-        await axios.delete("http://127.0.0.1:8000/api/delCart/"+uid)
+        await axios.delete("http://127.0.0.1:8000/api/delCart/"+props.uid)
         .then((res)=>{
             if(res.data.msg === 'success') {
                 window.location.reload();
@@ -106,7 +108,7 @@ function Pagi(props) {
                 alert(res.data.msg);
                 hideAreYouSure();
             }
-        }).catch((error)=>console.log(error.message+" uid = "+uid));
+        }).catch((error)=>console.log(error.message));
     }
 
     let [page,setPage] = useState(0);
@@ -209,7 +211,7 @@ function Pagi(props) {
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick={hideAreYouSure}>No</button>
                     <button type="button" class="btn btn-primary" onClick={deleteUser} id="surU">Yes</button>
                     <button type="button" class="btn btn-primary" onClick={deleteCart} id="surC">Sure</button>
-                    <DeleteItem itm={uid} />
+                    <DeleteItem itm={props.uid} />
                     
                 </div>
                 </div>

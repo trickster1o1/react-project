@@ -18,6 +18,8 @@ function AdminPannel() {
         }
     },[])
 
+    let [uid,setUid] = useState('');
+
     return(
         <>
             <Header />            
@@ -38,7 +40,7 @@ function AdminPannel() {
                     </thead>
                     <tbody>
                     
-                <Pagi user={data.users} itm="user" />
+                <Pagi user={data.users} itm="user" uid={uid} setUid = {setUid} />
                 </tbody>
                 </table>
                 
@@ -59,7 +61,7 @@ function AdminPannel() {
                     </thead>
                     <tbody>
                     {/* { displayCont } */}
-                    <Pagi user={data.products} itm="product" />
+                    <Pagi user={data.products} itm="product"  setUid = {setUid} />
                     </tbody>
                     </table> 
                     : <div className="emptyMsg" >Nothing Here</div>
@@ -80,7 +82,7 @@ function AdminPannel() {
                         </thead>
                         <tbody>
 
-                        <Pagi user = {data.carts} itm="cart" />
+                        <Pagi user = {data.carts} itm="cart"  setUid = {setUid} />
                         </tbody>
                         </table> 
                         : <div className="emptyMsg" >Nothing Here</div>
