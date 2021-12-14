@@ -1,6 +1,5 @@
 import './App.css';
 import Login from './Login';
-import Header from './Header';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Register from './Register';
 import FrontPage from './FrontPage';
@@ -15,6 +14,7 @@ import CartList from './CartList';
 import PendingList from './PendingList';
 import AdminPannel from './AdminPannel';
 import ApiTest from './ApiTest';
+import Test from './test';
 function App() {
   return (
     <div className="App">
@@ -32,7 +32,7 @@ function App() {
           {/* <AddProduct /> */}
         </Route>
         <Route path="/home">
-          <FrontPage />
+          <Protected cmt={FrontPage} />
         </Route>
         <Route path="/showProduct/:id">
           <ProductDetail />
@@ -54,6 +54,9 @@ function App() {
         </Route>
         <Route path="/apiTest">
           <ApiTest />
+        </Route>
+        <Route path="/test">
+          <Test />
         </Route>
 
 

@@ -28,13 +28,13 @@ function Header() {
         <Navbar bg="dark" variant="dark">
             <Container fluid>
                 <Navbar.Brand href="/">Art Gallery</Navbar.Brand>
-                <Nav className="me-auto navbar-wrapper">
+                <Nav className="me-auto navbar-wrapper" >
                     
                     {
                         localStorage.getItem('user-info') ? 
                         <>
                         
-                            <Link to="/home">Profile</Link>
+                            <Link to="/home" active>Profile</Link>
                             { user.id == 1
                                 ? <Link to="/addProduct">Add Product</Link>
                                 : null
