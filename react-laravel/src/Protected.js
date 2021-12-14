@@ -9,10 +9,10 @@ function Protected(props) {
             history.push('/register');
         }
     },[]);
-
-    return (
-        <Cmt />
-    );
+    
+        return (
+            <Cmt />
+        );
 }
 
 export default Protected;
