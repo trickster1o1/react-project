@@ -20,6 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('signup',[App\Http\Controllers\UserController::class,'signUp']);
 Route::post('login',[App\Http\Controllers\UserController::class,'login']);
+Route::get('userData/{unm}/{id}',[App\Http\Controllers\UserController::class,'userData']);
+Route::post('followUser',[App\Http\Controllers\UserController::class,'followUser']);
+Route::delete('unFollow/{follower}/{following}',[App\Http\Controllers\UserController::class,'unFollow']);
+
+
 Route::post('addProduct',[App\Http\Controllers\ProductController::class,'addProduct']);
 Route::get('list',[App\Http\Controllers\ProductController::class,'list']);
 Route::delete('delete/{id}',[App\Http\Controllers\ProductController::class,'delete']);

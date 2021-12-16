@@ -15,6 +15,7 @@ import PendingList from './PendingList';
 import AdminPannel from './AdminPannel';
 import ApiTest from './ApiTest';
 import Test from './test';
+import Profile from './Profile';
 function App() {
   return (
     <div className="App">
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route path="/searchResult/:prod">
           <SearchResult />
+        </Route>
+        <Route path="/profile/:username">
+          <Profile />
         </Route>
         <Route path="/cart">
           <CartList />
