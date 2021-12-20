@@ -2,7 +2,7 @@ import Header from './Header';
 import React, {useState,useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import DeleteItem from './DeleteItem';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 function ProductList() {
     const [data,setData] = useState([]);
@@ -73,14 +73,15 @@ function ProductList() {
                     <div align="center">
                         <img style={{"width":"100%","height":"19.55em"}} src={"http://127.0.0.1:8000/"+item.file_path} />
                         <div style={{"textAlign":"left","lineHeight":"17px","paddingTop":"7px"}}>
-                            <span style={{"fontWeight":"bold","fontSize":"14pt"}}><Link to={"/showProduct/"+item.id}>{item.name}</Link></span>
+                            <span style={{"fontWeight":"bold","fontSize":"14pt"}}><Link to={"/showProduct/"+item.id}>{item.name}</Link></span><br />
+                            <span><Link to={"/profile/"+item.username} style={{'textDecoration':'none','color':'rgba(0,0,0,0.5)','fontSize':'10pt'}}>@{item.username}</Link></span>
                             <p style={{"fontSize":"10pt"}}>{item.description}</p>
                             {
-                            user && user.id === 1
+                            user && user.username === item.username
                             ?   <> 
                                     <button className="btn btn-danger" onClick={()=>showAreYouSure(item.id)}>Delete</button> <Link to={"/updateProduct/"+item.id} className="btn btn-primary">Update</Link>
                                 </>
-                            : user && user.id !== 1
+                            : user && user.id !== item.username
                             ?   <> 
                                     <button className="btn btn-primary" onClick={()=>addCart(item.id)}>Add Cart</button> <button  className="btn btn-danger">Buy</button>
                                 </>

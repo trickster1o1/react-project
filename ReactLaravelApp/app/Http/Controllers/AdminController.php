@@ -16,7 +16,7 @@ class AdminController extends Controller
             } else {
                 $crt = 'load';
             }
-            if(count($users) < 1) {
+            if(count($users) < 2) {
                 $usr = 'empty';
             } else {
                 $usr = 'load';

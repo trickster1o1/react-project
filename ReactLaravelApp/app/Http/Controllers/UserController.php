@@ -20,6 +20,7 @@ class UserController extends Controller
                         $user->name = $req->name;
                         $user->email = $req->email;
                         $user->username = $req->username;
+                        $user->phone = $req->phone;
                         $user->password = Hash::make($req->input('password'));
                         $user->save();
             
@@ -41,14 +42,19 @@ class UserController extends Controller
 
     function userData($unm , $id) {
         $user = \App\Models\User::select('*')->where('username','=',$unm)->get();
-        $con = \App\Models\Connection::select('*')->where('follower','=',$id)->where('following','=',$user[0]->id)->get();
-        if(count($con) > 0) {
-            $foll = "true";
-        } else {
-            $foll = "false";
-        }
+        
+       
         if(count($user) > 0) {
-            return ['msg'=>'match','user'=>$user,'following'=>$foll];
+            $con = \App\Models\Connection::select('*')->where('follower','=',$id)->where('following','=',$user[0]->id)->get();
+            $follower = count(\App\Models\Connection::select('*')->where('following','=',$user[0]->id)->get());
+            $following = count(\App\Models\Connection::select('*')->where('follower','=',$user[0]->id)->get());
+
+            if(count($con) > 0) {
+                $foll = "true";
+            } else {
+                $foll = "false";
+            }
+            return ['msg'=>'match','user'=>$user,'following'=>$foll,'follower'=>$follower,'follows'=>$following];
         } else {
             return ['msg'=>'error404'];
         }

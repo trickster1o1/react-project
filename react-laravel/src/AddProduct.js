@@ -3,25 +3,21 @@ import {useHistory} from  'react-router-dom'
 import Header from './Header';
 
 function AddProduct() {
+    const user = JSON.parse(localStorage.getItem('user-info'));
     let history = useHistory();
     let [name,setName] = useState("");
     let [description,setDescription] = useState("");
     let [price,setPrice] = useState("");
     let [file,setFile] = useState("");
+    let [username,setUsername] = useState(user.username);
 
-    useEffect(()=>{
-        let user = JSON.parse(localStorage.getItem('user-info'));
-        if(user && user.id !== 1) {
-
-               history.push('/');
-        }
-    },[])
     async function upload() {
         const formData = new FormData();
         formData.append('file_path',file);
         formData.append('name',name);
         formData.append('price',price);
         formData.append('description',description);
+        formData.append('username',username);
         
         let result = await fetch("http://127.0.0.1:8000/api/addProduct", {
             method:'POST',

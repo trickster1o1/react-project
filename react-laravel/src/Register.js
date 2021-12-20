@@ -13,9 +13,10 @@ function Register() {
     const [password, setPassword] =useState("")
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
+    const [phone,setPhone] = useState("")
     const history = useHistory()
     async function signUp() {
-        let user = {name, password, username, email}
+        let user = {name, password, username, email, phone}
         // alert(user.email);
 
         let result = await fetch("http://127.0.0.1:8000/api/signup",{
@@ -50,6 +51,7 @@ function Register() {
                 <input type='text' value = {name} onChange = {(e)=>setName(e.target.value)} className='form-control' placeholder='Name' onKeyPress={(e)=>callSignup(e)} /> <br />
                 <input type='text' value = {email} onChange = {(e)=>setEmail(e.target.value)} className='form-control' placeholder='Email' onKeyPress={(e)=>callSignup(e)} /> <br />
                 <input type='text' value = {username} onChange = {(e)=>setUsername(e.target.value)} className='form-control' placeholder='Username' onKeyPress={(e)=>callSignup(e)} /> <br />
+                <input type='text' value = {phone} onChange = {(e)=>setPhone(e.target.value)} className='form-control' placeholder='Phone No' onKeyPress={(e)=>callSignup(e)} /> <br />
                 <input type='password' onChange = {(e) => setPassword(e.target.value)} className='form-control' placeholder='Password' onKeyPress={(e)=>callSignup(e)} />
                 <input type='submit' onClick = {signUp} className="btn btn-primary" style={{"float":"right","marginTop":"5px"}} />
 

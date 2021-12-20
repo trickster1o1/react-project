@@ -12,6 +12,7 @@ class ProductController extends Controller
         $product->name = $req->input('name');
         $product->description = $req->input('description');
         $product->price = $req->input('price');
+        $product->username = $req->input('username');
         $product->file_path = $req->file('file_path')->store('products');
 
         $product->save();
