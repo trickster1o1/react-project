@@ -1,5 +1,6 @@
 import Header from './Header';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 function FrontPage(){
     let user = JSON.parse(localStorage.getItem('user-info'));
     const [data,setData] = useState([]);
@@ -38,6 +39,7 @@ function FrontPage(){
                 </div>
             </div>
             <div style={{'padding':'1em','display':'flex','flexDirection':'column','alignItems':'center'}}>
+                <div><Link to="/addproduct">Add Product</Link></div>
                 <div>Items Bought</div>
                 <div>Items Bought</div>
                 <div>reviews</div>
