@@ -26,24 +26,24 @@ function AdminPannel() {
             <div className="container">
             <h1 align='center' style={{'paddingBottom':'1em'}}>Users</h1>
             { data.msg === 'success' && data.usr !== 'empty' ?
-            <div>
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">User_id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Activation_Date</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">User_id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Activation_Date</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        
+                    <Pagi user={data.users} itm="user" uid={uid} setUid = {setUid} />
+                    </tbody>
+                    </table>
                     
-                <Pagi user={data.users} itm="user" uid={uid} setUid = {setUid} />
-                </tbody>
-                </table>
-                
                 
                 </div>
                 : <div className="emptyMsg" >Nothing Here</div>

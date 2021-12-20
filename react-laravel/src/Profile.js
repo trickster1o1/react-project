@@ -14,18 +14,18 @@ function Profile(props) {
             await fetch('http://127.0.0.1:8000/api/userData/'+props.match.params.username+'/'+user.id)
             .then((res)=>res=res.json())
             .then((r)=>{
-                setData(r.user[0]);
+                setData(r);
                 if(r.following === 'true') {
                     setFollow(true);
                 }
             }).catch((error)=>console.log(error));
         }
-    },[])
+    },[follow])
 
     async function followUser() {
         let follower = JSON.parse(localStorage.getItem('user-info'));
         follower = follower.id;
-        let following = data.id;
+        let following = data.user[0].id;
         let udta = {follower , following};
         if(!follow) {
             await fetch('http://127.0.0.1:8000/api/followUser', {
@@ -62,7 +62,7 @@ function Profile(props) {
                             <div style={{'borderRadius':'100%','overflow':'hidden','height':'7em','width':'7em'}}>
                                 <img src='http://127.0.0.1:8000/products/pp.jpg' alt='error404' style={{'height':'100%','width':'atuo'}} />
                             </div>
-                            <span style={{'fontWeight':'bold','display':'block','paddingTop':'.5em'}}>{data && data.id ? data.name : "noone"}</span>
+                            <span style={{'fontWeight':'bold','display':'block','paddingTop':'.5em'}}>{data && data.user ? data.user[0].name : "noone"}</span>
                         </div>
                     </div>
                 </div>
@@ -75,8 +75,8 @@ function Profile(props) {
                             }
                         </div>
                         <div style={{'paddingTop':'1em','display':'flex','width':'45%','flexBasis':'100%'}}>
-                            <div style={{'borderRight':'1px solid rgba(0,0,0,0.2)','flexGrow':'1'}} align='center'><span style={{'fontWeight':'bold'}}>Follow</span><br /> 100</div>
-                            <div style={{'flexGrow':'1'}} align="center"><span style={{'fontWeight':'bold'}}>Following</span><br /> 100</div>
+                            <div style={{'borderRight':'1px solid rgba(0,0,0,0.2)','flexGrow':'1'}} align='center'><span style={{'fontWeight':'bold'}}>Followers</span><br /> {data && data.follower ? data.follower : "0"}</div>
+                            <div style={{'flexGrow':'1'}} align="center"><span style={{'fontWeight':'bold'}}>Following</span><br /> {data && data.follows ? data.follows : "0"}</div>
                         </div>
                     </div>
                 </div>

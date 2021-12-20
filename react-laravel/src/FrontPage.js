@@ -1,6 +1,15 @@
-import Header from './Header'
+import Header from './Header';
+import { useEffect, useState } from 'react';
 function FrontPage(){
     let user = JSON.parse(localStorage.getItem('user-info'));
+    const [data,setData] = useState([]);
+    useEffect(async ()=>{
+        await fetch('http://127.0.0.1:8000/api/userData/'+user.username+'/'+user.username)
+        .then((res)=>res.json())
+        .then((r)=>setData(r))
+        .catch((error)=>console.log(error.message));
+    },[])
+
     return(
         <>
         <Header />
@@ -22,8 +31,8 @@ function FrontPage(){
                             <button className="btn btn-secondary" style={{'width':'50%'}}>Edit profile</button>
                         </div>
                         <div style={{'paddingTop':'1em','display':'flex','width':'45%','flexBasis':'100%'}}>
-                            <div style={{'borderRight':'1px solid rgba(0,0,0,0.2)','flexGrow':'1'}} align='center'><span style={{'fontWeight':'bold'}}>Follow</span><br /> 100</div>
-                            <div style={{'flexGrow':'1'}} align="center"><span style={{'fontWeight':'bold'}}>Following</span><br /> 100</div>
+                            <div style={{'borderRight':'1px solid rgba(0,0,0,0.2)','flexGrow':'1'}} align='center'><span style={{'fontWeight':'bold'}}>Followers</span><br /> {data && data.follower ? data.follower : "0"}</div>
+                            <div style={{'flexGrow':'1'}} align="center"><span style={{'fontWeight':'bold'}}>Following</span><br /> {data && data.follows ? data.follows : "0"}</div>
                         </div>
                     </div>
                 </div>
