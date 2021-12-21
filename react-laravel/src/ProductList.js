@@ -121,7 +121,7 @@ function ProductList() {
                 </div>
             </div>
             </div>
-        <div className="container" style={{"paddingTop":"2em","paddingBottom":"20.6em"}}>
+        <div className="container" style={{"paddingTop":"2em","minHeight":"88.65vh"}}>
                 <Row md={4}>
                     { data.msg === 'success' ? displayProd : <h1>Nothing here</h1>}
                 </Row>

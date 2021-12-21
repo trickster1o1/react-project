@@ -42,7 +42,11 @@ class UserController extends Controller
 
     function userData($unm , $id) {
         $user = \App\Models\User::select('*')->where('username','=',$unm)->get();
-        
+        $prod = \App\Models\Product::select('*')->where('username','=',$unm)->get();
+
+        if(count($prod) < 1) {
+            $prod = "null";
+        }
        
         if(count($user) > 0) {
             $con = \App\Models\Connection::select('*')->where('follower','=',$id)->where('following','=',$user[0]->id)->get();
@@ -54,7 +58,7 @@ class UserController extends Controller
             } else {
                 $foll = "false";
             }
-            return ['msg'=>'match','user'=>$user,'following'=>$foll,'follower'=>$follower,'follows'=>$following];
+            return ['msg'=>'match','user'=>$user,'following'=>$foll,'follower'=>$follower,'follows'=>$following,'products'=>$prod];
         } else {
             return ['msg'=>'error404'];
         }
