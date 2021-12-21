@@ -1,4 +1,5 @@
 import Header from './Header';
+import {Row, Col} from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 function FrontPage(){
@@ -39,7 +40,41 @@ function FrontPage(){
                 </div>
             </div>
             <div style={{'padding':'1em','display':'flex','flexDirection':'column','alignItems':'center'}}>
-                <div><Link to="/addproduct">Add Product</Link></div>
+                <div style={{'width':'100%'}} align='center'>
+                    <div align="right">
+                        <Link to="/addproduct">Add Product</Link>
+                    </div>
+                    <div>
+
+                    {data && data.products ? 
+                    <Row md={4}>
+                    { data.products !== "null" ?
+                        data.products.map((product) =>
+                            <Col xs>
+                                <div className="card" style={{"width":"18rem"}} align="left">
+                                    <img src={"http://127.0.0.1:8000/"+product.file_path} className="card-img-top" alt="error404" style={{'height':'15em'}} />
+                                    <div className="card-body">
+                                        <h5 class="card-title">{product.name}</h5>
+                                        <p className="card-text">{product.description}</p>
+                                    </div>
+                                </div>
+                            </Col>
+                        )
+                    : "No product listed by this user"
+                    }
+                </Row>
+                 : "Loading..." 
+                        
+
+                        
+
+                        
+
+
+
+                    }
+                    </div>
+                </div>
                 <div>Items Bought</div>
                 <div>Items Bought</div>
                 <div>reviews</div>

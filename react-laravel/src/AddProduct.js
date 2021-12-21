@@ -12,6 +12,7 @@ function AddProduct() {
     let [username,setUsername] = useState(user.username);
 
     async function upload() {
+        
         const formData = new FormData();
         formData.append('file_path',file);
         formData.append('name',name);
