@@ -4,15 +4,42 @@ import {Row, Col} from 'react-bootstrap';
 import DeleteItem from './DeleteItem';
 import {Link} from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+
 function ProductList() {
     const [data,setData] = useState([]);
+    const [piData,setPiData] = useState([]);
     let [uid,setUid] = useState('');
     let user = JSON.parse(localStorage.getItem('user-info'));
     useEffect( async ()=>{
         let result = await fetch("http://127.0.0.1:8000/api/list");
         result = await result.json();
         setData(result);
+
+        //pi api initialization
+        const script = document.createElement('script');
+        script.src = 'https://sdk.minepi.com/pi-sdk.js';
+
+        document.body.appendChild(script);
+
     },[]);
+    
+   // pi api codes
+    const scopes = ['payments'];
+    function onIncompletePaymentFound(payment) { 
+        console.log("Incomplete something");
+    };
+    function triggerPi() {
+        // Read more about this callback in the SDK reference:
+        window.Pi.init({ version: "2.0", sandbox: true });
+            window.Pi.authenticate(scopes, onIncompletePaymentFound)
+            .then((auth)=>{
+                setPiData(auth);
+            })
+            .catch(function(error) {
+            console.error(error);
+            });
+    }
+    //end of pi user auth
 
     async function addCart(id) {
         let userId = user.id;
@@ -100,9 +127,18 @@ function ProductList() {
     const changePage = ({ selected }) => {
         setPageNumber(selected);
     }
+
     return(
         <>
         <Header />
+        
+        <div>
+            <button onClick={triggerPi}>Click</button>
+
+            {
+            piData ? <h1>{piData.user.uid}</h1> : <h1> nope </h1>
+            }
+        </div>
         <div id='sureBody' className="sureBoxBody"></div>
             <div className="modal" tabindex="-1" id="sure">
             <div className="modal-dialog">
