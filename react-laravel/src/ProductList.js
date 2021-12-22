@@ -136,7 +136,7 @@ function ProductList() {
             <button onClick={triggerPi}>Click</button>
 
             {
-            piData ? <h1>{piData.user.uid}</h1> : <h1> nope </h1>
+            piData && piData.user ? <h1>{piData.user.uid}</h1> : <h1> nope </h1>
             }
         </div>
         <div id='sureBody' className="sureBoxBody"></div>
