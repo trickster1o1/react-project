@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 function FrontPage(){
     let user = JSON.parse(localStorage.getItem('user-info'));
     const [data,setData] = useState([]);
-    useEffect(async ()=>{
-        await fetch('http://127.0.0.1:8000/api/userData/'+user.username+'/'+user.username)
-        .then((res)=>res.json())
-        .then((r)=>setData(r))
-        .catch((error)=>console.log(error.message));
+    useEffect(()=>{
+        async function fetchData() {
+            await fetch('http://127.0.0.1:8000/api/userData/'+user.username+'/'+user.username)
+            .then((res)=>res.json())
+            .then((r)=>setData(r))
+            .catch((error)=>console.log(error.message));
+        }
+        fetchData();
     },[])
 
     return(
@@ -60,17 +63,10 @@ function FrontPage(){
                                 </div>
                             </Col>
                         )
-                    : "No product listed by this user"
-                    }
-                </Row>
-                 : "Loading..." 
-                        
-
-                        
-
-                        
-
-
+                        : "No product listed by this user"
+                        }
+                    </Row>
+                    : "Loading..." 
 
                     }
                     </div>

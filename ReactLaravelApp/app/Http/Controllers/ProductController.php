@@ -16,7 +16,8 @@ class ProductController extends Controller
         $product->file_path = $req->file('file_path')->store('products');
 
         $product->save();
-        return $product;
+        
+        return ['msg'=>'success'];
     }
     function list() {
         $prod = \App\Models\Product::orderBy('id','desc')->get();

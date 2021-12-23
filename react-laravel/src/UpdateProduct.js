@@ -8,13 +8,16 @@ function UpdateProduct(props) {
     const [description, setDescription] = useState('');
     const [data, setData] = useState([]);
     let history = new useHistory();
-    useEffect( async () => {
-        let result = await fetch("http://127.0.0.1:8000/api/showProduct/"+props.match.params.id);
-        result = await result.json();
-        setData(result);
-        setName(result.name);
-        setPrice(result.price);
-        setDescription(result.description);
+    useEffect(() => {
+        async function fetchData() {
+            let result = await fetch("http://127.0.0.1:8000/api/showProduct/"+props.match.params.id);
+            result = await result.json();
+            setData(result);
+            setName(result.name);
+            setPrice(result.price);
+            setDescription(result.description);
+        }
+        fetchData();
     },[]);
 
     async function update() {
@@ -30,9 +33,9 @@ function UpdateProduct(props) {
 
         result = await result.json();
 
-        if(result.msg == "success") {
+        if(result.msg === "success") {
             history.push('/');
-        } else if(result.msg == "error404") {
+        } else if(result.msg === "error404") {
             alert(result.msg);
         }  else {
             alert("Internal Server Error try again leter");

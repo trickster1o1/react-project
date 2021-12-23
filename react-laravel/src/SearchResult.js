@@ -9,11 +9,13 @@ function SearchResult(props) {
     let product = props.match.params.prod;
     
     // window.location.reload();
-    useEffect(async ()=>{
-        
-        let result = await fetch("http://127.0.0.1:8000/api/search/"+product)
-        result = await result.json();
-        setData(result);
+    useEffect(()=>{
+        async function fetchData() {
+            let result = await fetch("http://127.0.0.1:8000/api/search/"+product)
+            result = await result.json();
+            setData(result);
+        }
+        fetchData();
         
     },[])
     

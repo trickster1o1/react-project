@@ -8,14 +8,17 @@ function AdminPannel() {
     const user = JSON.parse(localStorage.getItem('user-info'));
     let history = new useHistory();
     let [data,setData] = useState([]);
-    useEffect(async ()=>{
-        if(user && user.id !== 1) {
-            history.push('/');
-        } else {
-            let result = await fetch("http://127.0.0.1:8000/api/adminList");
-            result = await result.json();
-            setData(result);
+    useEffect(()=>{
+        async function fetchData() {
+            if(user && user.id !== 1) {
+                history.push('/');
+            } else {
+                let result = await fetch("http://127.0.0.1:8000/api/adminList");
+                result = await result.json();
+                setData(result);
+            }
         }
+    fetchData();    
     },[])
 
     let [uid,setUid] = useState('');

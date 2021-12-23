@@ -7,20 +7,23 @@ function Profile(props) {
     let history = new useHistory();
     let [data,setData] = useState([]);
     let [follow,setFollow] = useState(false);
-    useEffect(async ()=>{
-        let user = JSON.parse(localStorage.getItem('user-info'));
-        if(user.username === props.match.params.username) {
-            history.push('/home');
-        } else {
-            await fetch('http://127.0.0.1:8000/api/userData/'+props.match.params.username+'/'+user.id)
-            .then((res)=>res=res.json())
-            .then((r)=>{
-                setData(r);
-                if(r.following === 'true') {
-                    setFollow(true);
-                }
-            }).catch((error)=>console.log(error));
+    useEffect(()=>{
+        async function fetchData() {
+            let user = JSON.parse(localStorage.getItem('user-info'));
+            if(user.username === props.match.params.username) {
+                history.push('/home');
+            } else {
+                await fetch('http://127.0.0.1:8000/api/userData/'+props.match.params.username+'/'+user.id)
+                .then((res)=>res=res.json())
+                .then((r)=>{
+                    setData(r);
+                    if(r.following === 'true') {
+                        setFollow(true);
+                    }
+                }).catch((error)=>console.log(error));
+            }
         }
+        fetchData();
     },[follow])
 
     async function followUser() {

@@ -1,4 +1,4 @@
-import { Navbar, Nav, Container, NavDropdown, FormControl, Form, Button } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, FormControl } from 'react-bootstrap'
 import {Link,useHistory} from 'react-router-dom'
 import {useState} from 'react'
 function Header() {
@@ -35,7 +35,7 @@ function Header() {
                         <>
                         
                             <Link to="/home" active>Profile</Link>
-                            { user.id == 1
+                            { user.id === 1
                                 ? <Link to="/addProduct">Add Product</Link>
                                 : null
                             }
