@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 function PendingList() {
     let [data,setData] = useState([]);
     let user = JSON.parse(localStorage.getItem('user-info'));
-    useEffect(async ()=>{
-        let result = await fetch("http://127.0.0.1:8000/api/pendingList/"+user.id);
-        result = await result.json();
-        setData(result);
+    useEffect(()=>{
+        async function fetchData() {
+            let result = await fetch("http://127.0.0.1:8000/api/pendingList/"+user.id);
+            result = await result.json();
+            setData(result);
+        }
+        fetchData();
     },[]);
     return(
         <>
@@ -29,7 +32,7 @@ function PendingList() {
                         data.product.map((item)=>
                             <tr>
                                 <th scope="row">{item.id}</th>
-                                <td><img src={"http://127.0.0.1:8000/"+item.file_path} /></td>
+                                <td><img src={"http://127.0.0.1:8000/"+item.file_path} alt="error404" /></td>
                                 <td>{item.title}</td>
                                 {/* <td><button className="btn btn-danger" onClick={()=>deleteCart(item.id)}>Delete</button></td> */}
                             </tr>

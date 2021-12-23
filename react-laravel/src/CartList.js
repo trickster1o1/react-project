@@ -6,14 +6,17 @@ function CartList() {
     const user = JSON.parse(localStorage.getItem('user-info'));
     const history = new useHistory();
     let [data,setData] = useState([]);
-    useEffect( async ()=>{
-        if(!user) {
-            history.push('/login');
-        } else {
-            let result = await fetch("http://127.0.0.1:8000/api/cartList/"+user.id);
-            result = await result.json();
-            setData(result);
+    useEffect(()=>{
+        async function fetchData() {
+            if(!user) {
+                history.push('/login');
+            } else {
+                let result = await fetch("http://127.0.0.1:8000/api/cartList/"+user.id);
+                result = await result.json();
+                setData(result);
+            }
         }
+    fetchData();    
     },[])
     
 
@@ -83,7 +86,7 @@ function CartList() {
                         data.product.map((item)=>
                             <tr>
                                 <th scope="row">{item.id}</th>
-                                <td><img src={"http://127.0.0.1:8000/"+item.file_path} /></td>
+                                <td><img src={"http://127.0.0.1:8000/"+item.file_path} alt="error404" /></td>
                                 <td>{item.title}</td>
                                 <td><button className="btn btn-danger" onClick={()=>deleteCart(item.id)}>Delete</button></td>
                             </tr>

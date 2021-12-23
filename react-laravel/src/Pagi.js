@@ -129,13 +129,10 @@ function Pagi(props) {
             })
         } else if(props.itm === 'product') {
             lstData = props.user.slice(viewed , viewed + thresHold).map((usr) => {
-                if(usr.id === 1) { 
-                    return null
-                } else {
                     return(
                         <tr>
                 <td>
-                    <img src={"http://127.0.0.1:8000/"+usr.file_path} /><br />
+                    <img src={"http://127.0.0.1:8000/"+usr.file_path} alt="error404" /><br />
                     <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{usr.name}</span>
                 </td>
                 <td>{usr.description}</td>
@@ -146,17 +143,15 @@ function Pagi(props) {
                 </td>
             </tr>
                     )
-                }
+                
             })
         } else if(props.itm === 'cart') {
             lstData = props.user.slice(viewed , viewed + thresHold).map((usr) => {
-                if(usr.id === 1) { 
-                    return null
-                } else {
+                
                     return(
                         <tr>
                             <td>
-                                <img src={"http://127.0.0.1:8000/"+usr.file_path} /><br />
+                                <img src={"http://127.0.0.1:8000/"+usr.file_path} alt="error404" /><br />
                                 <span style={{'fontSize':'10pt','color':'rgba(0,0,0,0.6)'}}>{usr.name}</span>
                             </td>
                             <td>{usr.user_id}</td>
@@ -168,7 +163,7 @@ function Pagi(props) {
                             </td>
                         </tr>
                     )
-                }
+                
             })
         }
         

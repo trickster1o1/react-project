@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from  'react-router-dom'    
 import Header from './Header';
 
@@ -25,8 +25,14 @@ function AddProduct() {
             body:formData
         });
 
-        alert("data has been saved");
-        history.push('/');
+        result = await result.json();
+
+        if(result.msg === 'success'){
+            alert("data has been saved");
+            history.push('/');
+        } else {
+            alert('error');
+        }
 
     }
     return (

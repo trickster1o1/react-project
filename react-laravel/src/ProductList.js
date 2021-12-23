@@ -7,38 +7,42 @@ import ReactPaginate from 'react-paginate';
 
 function ProductList() {
     const [data,setData] = useState([]);
-    const [piData,setPiData] = useState([]);
+    // const [piData,setPiData] = useState([]);
     let [uid,setUid] = useState('');
     let user = JSON.parse(localStorage.getItem('user-info'));
-    useEffect( async ()=>{
-        let result = await fetch("http://127.0.0.1:8000/api/list");
-        result = await result.json();
-        setData(result);
+    useEffect(()=>{
+        async function fetchData() {
+            let result = await fetch("http://127.0.0.1:8000/api/list");
+            result = await result.json();
+            setData(result);
 
-        //pi api initialization
-        const script = document.createElement('script');
-        script.src = 'https://sdk.minepi.com/pi-sdk.js';
+            //pi api initialization
+            // const script = document.createElement('script');
+            // script.src = 'https://sdk.minepi.com/pi-sdk.js';
 
-        document.body.appendChild(script);
+            // document.body.appendChild(script);
+        }
+        fetchData();
 
     },[]);
     
    // pi api codes
-    const scopes = ['payments'];
-    function onIncompletePaymentFound(payment) { 
-        console.log("Incomplete something");
-    };
-    function triggerPi() {
-        // Read more about this callback in the SDK reference:
-        window.Pi.init({ version: "2.0", sandbox: true });
-            window.Pi.authenticate(scopes, onIncompletePaymentFound)
-            .then((auth)=>{
-                setPiData(auth);
-            })
-            .catch(function(error) {
-            console.error(error);
-            });
-    }
+    // const scopes = ['payments'];
+    // function onIncompletePaymentFound(payment) { 
+    //     console.log("Incomplete something");
+    // };
+    // async function triggerPi() {
+    //     // Read more about this callback in the SDK reference:
+    //     window.Pi.init({ version: "2.0", sandbox: true });
+    //         window.Pi.authenticate(scopes, onIncompletePaymentFound)
+    //         .then((auth)=>{
+    //             setPiData(auth);
+    //             console.log(piData);
+    //         })
+    //         .catch(function(error) {
+    //         console.error(error);
+    //         });
+    // }
     //end of pi user auth
 
     async function addCart(id) {
@@ -98,11 +102,12 @@ function ProductList() {
             { return(
                 <Col xs style={{'paddingBottom':'1em'}}>
                     <div align="center">
-                        <img style={{"width":"100%","height":"19.55em"}} src={"http://127.0.0.1:8000/"+item.file_path} />
+                        <img style={{"width":"100%","height":"19.55em"}} src={"http://127.0.0.1:8000/"+item.file_path} alt="error404" />
                         <div style={{"textAlign":"left","lineHeight":"17px","paddingTop":"7px"}}>
                             <span style={{"fontWeight":"bold","fontSize":"14pt"}}><Link to={"/showProduct/"+item.id}>{item.name}</Link></span><br />
                             <span><Link to={"/profile/"+item.username} style={{'textDecoration':'none','color':'rgba(0,0,0,0.5)','fontSize':'10pt'}}>@{item.username}</Link></span>
-                            <p style={{"fontSize":"10pt"}}>{item.description}</p>
+                            <p style={{"fontSize":"10pt",'margin':'0'}}>{item.description}</p>
+                            <p style={{'paddingTop':'.5em','margin':'0','paddingBottom':'.5em','color':'red','fontWeight':'bold'}}>Rs.{item.price}</p>
                             {
                             user && user.username === item.username
                             ?   <> 
@@ -132,13 +137,13 @@ function ProductList() {
         <>
         <Header />
         
-        <div>
+        {/* <div>
             <button onClick={triggerPi}>Click</button>
 
             {
             piData && piData.user ? <h1>{piData.user.uid}</h1> : <h1> nope </h1>
             }
-        </div>
+        </div> */}
         <div id='sureBody' className="sureBoxBody"></div>
             <div className="modal" tabindex="-1" id="sure">
             <div className="modal-dialog">

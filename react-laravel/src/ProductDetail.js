@@ -7,13 +7,16 @@ function ProductDetail(props) {
     const [cmnt,setCmnt] = useState("");
     const [comment,setComment] = useState([]);
     let user = JSON.parse(localStorage.getItem('user-info'));
-    useEffect(async ()=>{
-        let result = await fetch("http://127.0.0.1:8000/api/showProduct/"+props.match.params.id);
-        let comment = await fetch("http://127.0.0.1:8000/api/showComment/"+props.match.params.id);
-        result = await result.json();
-        comment = await comment.json();
-        setData(result);
-        setComment(comment);
+    useEffect(()=>{
+        async function fetchData() {
+            let result = await fetch("http://127.0.0.1:8000/api/showProduct/"+props.match.params.id);
+            let comment = await fetch("http://127.0.0.1:8000/api/showComment/"+props.match.params.id);
+            result = await result.json();
+            comment = await comment.json();
+            setData(result);
+            setComment(comment);
+        }
+        fetchData();
 
     },[]);
 
@@ -45,7 +48,10 @@ function ProductDetail(props) {
             method:'DELETE'
         })
         res = await res.json();
-        window.location.reload();
+        if(res.msg === 'success') {
+             window.location.reload();
+        }
+       
 
     }
     return(
@@ -54,7 +60,7 @@ function ProductDetail(props) {
         <div className="container" style={{"paddingTop":"2em","paddingBottom":"17.2em"}}>
             <Row md={2}>
                 <Col style={{"textAlign":"center"}}>
-                    <img src={"http://127.0.0.1:8000/"+data.file_path} style={{"width":"100%"}} /> <br />
+                    <img src={"http://127.0.0.1:8000/"+data.file_path} style={{"width":"100%"}} alt="error404" /> <br />
                     <span style={{"float":"left"}}><b>Name: {data.name}</b></span><br />
                     <span style={{"float":"left"}}><b>Price: Rs.{data.price}</b></span>
                     

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from './Header';
 import axios from 'axios';
 function ApiTest() {
@@ -111,7 +111,7 @@ function ApiTest() {
                 break;
             case 'poke':
                 poke.style.display = 'block';
-        
+                break;        
             default:
                 break;
         }
